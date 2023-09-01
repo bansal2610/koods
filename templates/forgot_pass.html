@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+{% for msg in messages %}
+<script>
+  alert("{{ msg|escapejs }}");
+</script>
+{% endfor %}
+
+<section class="  bg-2">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-5 p-5">
+        <div class="slick-container">
+          <div class="one-time ">
+
+            <div class="slick-item p-5 ">
+              <img src="/static/images/learn.webp" class="img-fluid">
+            </div>
+            <div class="slick-item p-5 ">
+              <img src="/static/images/job.webp" class="img-fluid">
+            </div>
+            <div class="slick-item p-5 ">
+              <img src="/static/images/practice.webp" class="img-fluid">
+            </div>
+            <div class="slick-item  p-5 ">
+              <img src="/static/images/compete.webp" class="img-fluid">
+            </div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="col-md-7 my-10">
+        <h3>Reset Password</h3>
+        <h4>Create a new password to login your account.</h4>
+
+        <form method="post" action="{% url 'forget' %}">
+          {% csrf_token %}
+          <div class="form-outline mb-4">
+            <input type="email" name="email" id="email" class="form-control form-control-lg" required />
+            <label class="form-label" for="email">Email address</label>
+          </div>
+          <button type="submit" class="btn btn-success btn-block">Send OTP</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% endblock %}

@@ -1,0 +1,60 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+
+<section>
+
+    <!-- Page Header Start -->
+    <div class="container-fluid page-header py-6 mt-6 wow fadeIn" data-wow-delay="0.1s">
+        <div class="container">
+            <nav aria-label="breadcrumb animated slideInDown">
+                <ol class="breadcrumb mb-4">
+                    <li class="breadcrumb-item"><a class="text-white" href="/">Home</a></li>
+                    <li class="breadcrumb-item"><a class="text-white" href="/courses">Courses</a></li>
+                    <li class="breadcrumb-item text-primary active" aria-current="page">{{coursedetail.course_title}}
+                    </li>
+                </ol>
+            </nav>
+            <div class="col-md-6">
+                <h2 class="fsize5 text-white animated slideInDown mb-4">{{coursedetail.course_title}}</h2>
+                <ol class="breadcrumb text-white mb-0">
+                    <li class="breadcrumb-item"><i
+                            class="fa fa-signal text-primary me-2"></i>{{coursedetail.course_level}}</li>
+                    <li class="breadcrumb-item"><i
+                            class="fa fa-calendar-alt text-primary me-2"></i>{{coursedetail.course_duration}}</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+    <!-- Page Header End -->
+
+
+    <div class="container-fluid" style="background-color: #f6f8fa; height: 100vh;">
+        <div class="row">
+            <div class="col-md-8">
+                <div class="card m-4">
+                    <div class="card-body">
+                        <h4>About</h4>
+                        <p>{{coursedetail.course_des | safe}}</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 stickyjob">
+                <img class="img-fluid-job" src="/media/{{coursedetail.course_image}}" alt="" />
+                <h4 class="p-2">Program Cost:&emsp;${{coursedetail.course_price}}</h4>
+                <a href="" class="btn btn-primary py-sm-3 px-sm-5" style="display: block;">Enroll Now</a>
+                <ul style="list-style-type: none; font-size: 18px; line-height: 2rem;">
+                    <li class="pt-4"><i class="bi bi-check2-circle"></i> Learn from Industry Leaders</li>
+                    <li><i class="bi bi-check2-circle"></i> Industry aligned Projects</li>
+                    <li><i class="bi bi-check2-circle"></i> Featured listing of Resume</li>
+                    <li><i class="bi bi-check2-circle"></i> Certification</li>
+                    <li><i class="bi bi-check2-circle"></i> Personalised Career Coaching</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+</section>
+
+{% endblock %}

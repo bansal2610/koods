@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<section>
+
+    <!-- Page Header Start -->
+    <div class="container-fluid page-header py-6 mt-6 wow fadeIn" data-wow-delay="0.1s">
+        <div class="container">
+            <nav aria-label="breadcrumb animated slideInDown">
+                <ol class="breadcrumb mb-4">
+                    <li class="breadcrumb-item"><a class="text-white" href="/">Home</a></li>
+                    <li class="breadcrumb-item"><a class="text-white" href="/jobs">Jobs</a></li>
+                    <li class="breadcrumb-item text-primary active" aria-current="page">{{jobdetail.job_title}}
+                    </li>
+                </ol>
+            </nav>
+            <div class="col-md-6">
+                <h2 class="fsize5 text-white animated slideInDown mb-4">{{jobdetail.job_title}}</h2>
+                <h5 class="text-white animated slideInDown mb-4"><i class="bi bi-building text-primary me-2"></i>{{jobdetail.company}}</h5>
+            </div>
+        </div>
+    </div>
+    <!-- Page Header End -->
+    
+    <div class="my-5">
+        <h2 class="contents animated slideInDown mb-4">{{jobdetail.job_title}}</h2>
+        <h5 class="contents animated slideInDown mb-4">{{jobdetail.company}}</h5>
+        <h5 class="contents fsize">{{jobdetail.job_des | safe}}</h5>
+    </div>
+
+</section>
+
+{% endblock %}

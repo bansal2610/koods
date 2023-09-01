@@ -1,0 +1,231 @@
+{% extends 'base.html' %}
+
+{% load crispy_forms_tags %}
+
+{% block content %}
+
+{% if user.is_authenticated %}
+
+{% for msg in messages %}
+<script>
+    alert("{{ msg|escapejs }}");
+</script>
+{% endfor %}
+
+<section class="container-fluid px-0">
+    <div class="row">
+        <div class="tab col-md-4">
+            <button class="tablinks" onclick="openCity(event, 'Profile')" id="defaultOpen">Profile</button>
+            <button class="tablinks" onclick="openCity(event, 'Provider')">Become a Provider</button>
+            <button class="tablinks" onclick="openCity(event, 'Settings')">Settings</button>
+        </div>
+
+        <div id="Profile" class="tabcontent">
+
+            <div class="row pt-4" id="check1">
+
+                <div class="col-md-6">
+                    <div class="col-md-12">
+                        <div class="card mb-4">
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-sm-8">
+
+                                        <img src="/media/{{user.profile.profile_image}}" alt="avatar"
+                                            class="rounded-circle img-fluid"
+                                            style="width: 140px; object-fit: contain; height: 140px;" />
+                                        <p class="text-muted px-3 mb-0">{{user.username}}</p>
+
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <button class="btn btn-primary edit fcheck1">Edit Profile <i
+                                                class="bi bi-pencil-square"></i></button>
+                                        <div class="mt-5">
+                                            <a href="/update_profile/{{user.id}}/"><button class="btn btn-primary edit">Edit Profile 2 <i
+                                                    class="bi bi-pencil-square"></i></button></a>
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <hr>
+                                <div class="row">
+                                    <div class="col-sm-5">
+                                        <p class="mb-0 fsizep"><a href="/media/{{user.profile.resume}}"
+                                                target="_blank"><i
+                                                    class="bi bi-file-earmark-text-fill text-primary"></i> View
+                                                Resume</a></p>
+                                    </div>
+                                </div>
+                                <hr>
+                                <div class="row">
+                                    <div class="col-sm-5">
+                                        <p class="mb-0">Full Name</p>
+                                    </div>
+                                    <div class="col-sm-7">
+                                        <p class="text-muted mb-0">{{user.first_name}} {{user.last_name}}</p>
+                                    </div>
+                                </div>
+                                <hr>
+                                <div class="row">
+                                    <div class="col-sm-5">
+                                        <p class="mb-0">Email</p>
+                                    </div>
+                                    <div class="col-sm-7">
+                                        <p class="text-muted mb-0">{{user.email}}</p>
+                                    </div>
+                                </div>
+                                <hr>
+                                <div class="row">
+                                    <div class="col-sm-5">
+                                        <p class="mb-0">Phone</p>
+                                    </div>
+                                    <div class="col-sm-7">
+                                        <p class="text-muted mb-0">{{user.profile.phone}}</p>
+                                    </div>
+                                </div>
+                                <hr>
+                                <div class="row">
+                                    <div class="col-sm-5">
+                                        <p class="mb-0">Gender</p>
+                                    </div>
+                                    <div class="col-sm-7">
+                                        <p class="text-muted mb-0">{{user.profile.gender}}</p>
+                                    </div>
+                                </div>
+                                <hr>
+                                <div class="row">
+                                    <div class="col-sm-5">
+                                        <p class="mb-0">Institution/Organization</p>
+                                    </div>
+                                    <div class="col-sm-7">
+                                        <p class="text-muted mb-0">{{user.profile.institution}}</p>
+                                    </div>
+                                </div>
+                                <hr>
+                                <div class="row">
+                                    <div class="col-sm-5">
+                                        <p class="mb-0">Resume Data</p>
+                                    </div>
+                                    <div class="col-sm-7">
+                                        <textarea class="text-muted mb-0">{{user.profile.resume_data}}</textarea>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="card mb-4">
+                            <div class="card-body">
+
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <p class="mb-0">Skills</p>
+                                    </div>
+                                    <div class="col-md-12 p-3">
+                                        {% for i in skill %}
+                                        <div class="mb-0 skills">{{i}}</div>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="card mb-4">
+                            <div class="card-body">
+
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <p class="mb-0">About</p>
+                                    </div>
+                                    <div class="col-md-12 p-3">
+                                        <p class="text-muted mb-0">{{user.profile.profile_desc}}</p>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+
+                    <div class="col-md-12">
+                        <div class="card mb-4">
+                            <div class="card-body">
+                                <canvas id="myChart1" style="width:100%;max-width:625px"></canvas>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-12">
+                        <div class="card mb-4">
+                            <div class="card-body">
+                                <canvas id="myChart2" style="width:100%;max-width:625px"></canvas>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="row pt-4" id="check2" style="display: none;">
+                <div class="col-md-12">
+                    <div class="row">
+
+                        <div class="col-md-4">
+                            <div class="card mb-4">
+                                <div class="card-body">
+                                    <button class="btn btn-primary fcheck2">Back To Profile <i
+                                            class="bi bi-box-arrow-left"></i></button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-8">
+                            <div class="card mb-4">
+                                <div class="card-body p-4 p-lg-5 text-black">
+
+                                    <form method="POST" enctype="multipart/form-data">
+                                        {% csrf_token %}
+                                        {{user_form|crispy}}
+                                        {{profile_form|crispy}}
+                                        <button type="submit" class="btn btn-success btn-block">Update</button>
+                                    </form>
+
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="Provider" class="tabcontent">
+            <h3 class="pt-4">Provider</h3>
+            <a href="/provider">Become a Provider</a>
+
+        </div>
+
+        <div id="Settings" class="tabcontent">
+            <h3 class="pt-4">Settings</h3>
+
+        </div>
+    </div>
+</section>
+
+
+{% else %}
+
+<div class="m-5">
+    <center>
+        <h2>No Profile Yet</h2>
+        <a href="/sign-up"><button class="btn px-5 btn-primary btn-lg btn-block" type="submit">Sign Up</button></a>
+    </center>
+</div>
+
+{% endif %}
+
+{% endblock %}

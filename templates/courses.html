@@ -1,0 +1,87 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+
+<section>
+
+    <!-- Page Header Start -->
+    <div class="container-fluid page-header py-6 mt-6 mt-0 wow fadeIn" data-wow-delay="0.1s">
+        <div class="container text-center">
+            <h1 class="display-4 text-white animated slideInDown mb-4">Courses</h1>
+            <nav aria-label="breadcrumb animated slideInDown">
+                <ol class="breadcrumb justify-content-center mb-0">
+                    <li class="breadcrumb-item"><a class="text-white" href="/">Home</a></li>
+                    <li class="breadcrumb-item text-primary active" aria-current="page">Courses</li>
+                </ol>
+            </nav>
+        </div>
+    </div>
+    <!-- Page Header End -->
+
+
+    <!-- Courses Start -->
+    <div class="container-xxl ">
+        <div class="container my-5">
+            {% if user.is_authenticated and user.is_staff %}
+            <div style="float: right;">
+                <a href="/add_course"><button class="btn btn-grey">Add courses</button></a>
+            </div>
+            {% endif %}
+            <div class="text-center mx-auto mb-5 wow fadeInUp" data-wow-delay="0.1s" style="max-width: 500px;">
+                <h6 class="text-primary text-uppercase mb-2">Tranding Courses</h6>
+                <h1 class="display-6 mb-4">Our Courses Upskill You With Driving Training</h1>
+            </div>
+            <div class="row g-4 justify-content-center">
+
+                {% for n in courseData %}
+
+                <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.1s">
+                    <div class="courses-item d-flex flex-column bg-light overflow-hidden h-100">
+                        <div class="text-center p-4 pt-0">
+                            <div class="d-inline-block bg-primary text-white fs-5 py-1 px-4 mb-4">${{n.course_price}}
+                            </div>
+                            <h5 class="mb-3">{{n.course_title}}</h5>
+                            <ol class="breadcrumb justify-content-center mb-0">
+                                <li class="breadcrumb-item small"><i
+                                        class="fa fa-signal text-primary me-2"></i>{{n.course_level}}</li>
+                                <li class="breadcrumb-item small"><i
+                                        class="fa fa-calendar-alt text-primary me-2"></i>{{n.course_duration}}</li>
+                            </ol>
+                        </div>
+                        <div class="position-relative mt-auto">
+
+                            {% if n.course_image != NULL %}
+
+                            <img class="img-fluid-new" src="/media/{{n.course_image}}" alt="" />
+                            <div class="courses-overlay">
+                                <a class="btn btn-outline-primary border-2"
+                                    href="/course-details/{{n.course_slug}}">Read More</a>
+                            </div>
+
+                            {% endif %}
+
+
+
+                        </div>
+                        <ul style="list-style-type: none; font-size: 18px; line-height: 2rem;">
+                            <li class="pt-4"><i class="bi bi-check2-circle"></i> Learn from Industry Leaders</li>
+                            <li><i class="bi bi-check2-circle"></i> Industry aligned Projects</li>
+                            <li><i class="bi bi-check2-circle"></i> Featured listing of Resume</li>
+                            <li><i class="bi bi-check2-circle"></i> Certification</li>
+                            <li><i class="bi bi-check2-circle"></i> Personalised Career Coaching</li>
+                        </ul>
+                    </div>
+                </div>
+
+                {% endfor %}
+
+            </div>
+        </div>
+    </div>
+    <!-- Courses End -->
+
+
+</section>
+
+{% endblock %}

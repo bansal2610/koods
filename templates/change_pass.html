@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+{% for msg in messages %}
+<script>
+  alert("{{ msg|escapejs }}");
+</script>
+{% endfor %}
+
+<section class="  bg-2">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-12 my-5">
+
+        <form method="post" action="{% url 'change_pass' %}">
+          {% csrf_token %}
+          <div class="form-outline mb-4">
+            <input type="password" name="password1" id="password1" class="form-control form-control-lg" required />
+            <label class="form-label" for="password1">New Password</label>
+          </div>
+          <div class="form-outline mb-4">
+            <input type="password" name="password2" id="password2" class="form-control form-control-lg" required />
+            <label class="form-label" for="password2">Confirm Password</label>
+            <div class="edit"><input type="checkbox" class="form-label" onclick="myFunction2()"><span>Show Password</span></div>
+          </div>
+          <button type="submit" class="btn btn-success btn-block">Update Password</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  function myFunction2() {
+    var x = document.getElementById("password1");
+    var y = document.getElementById("password2");
+    if (x.type  === "password" && y.type === "password") {
+      x.type = "text";
+      y.type = "text";
+    } else {
+      x.type = "password";
+      y.type = "password";
+    }
+  }
+</script>
+
+{% endblock %}

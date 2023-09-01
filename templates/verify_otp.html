@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+{% for msg in messages %}
+<script>
+  alert("{{ msg|escapejs }}");
+</script>
+{% endfor %}
+
+<section class="  bg-2">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-12 my-5">
+    <form method="post" action="{% url 'verify_otp' %}">
+      {% csrf_token %}
+      <div class="form-outline mb-4">
+        <input type="text" name="otp" id="otp" class="form-control form-control-lg" required />
+        <label class="form-label" for="otp">OTP</label>
+      </div>
+      <button type="submit" class="btn btn-success btn-block">Verify OTP</button>
+    </form>
+  </div>
+</div>
+</div>
+</section>
+
+{% endblock %}
