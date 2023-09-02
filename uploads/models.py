@@ -22,6 +22,8 @@ class Profile(models.Model):
     skills = models.ManyToManyField(skil)
     phone = PhoneNumberField(region="IN",null=True, blank=True,unique=True)
     gender = models.CharField(max_length=100)
+    is_job = models.BooleanField(default=False)
+    is_course = models.BooleanField(default=False)
 
     def __str__(self):
         return '%s %s' % (self.user.first_name, self.user.last_name)

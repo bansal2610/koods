@@ -20,7 +20,7 @@
 
     <div class="container-xxl ">
         <div class="container my-5">
-            {% if user.is_authenticated and user.is_staff %}
+            {% if user.is_authenticated and user.profile.is_job == True %}
             <div style="float: right;">
                 <a href="/add_jobs"><button class="btn btn-grey">Add Jobs</button></a>
             </div>

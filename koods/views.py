@@ -14,8 +14,9 @@ from uploads.models import Profile, skil
 import ast
 from django.conf import settings
 from django.core.mail import BadHeaderError, send_mail
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User,Permission,Group
 from django.contrib.auth.hashers import make_password
+from django.contrib.auth import get_user
 import random
 from uploads.views import data
 
@@ -26,7 +27,7 @@ def Home(request):
     return render(request,"home.html",data)
 
 def Add_jobs(request):
-    if not request.user.is_staff:
+    if not request.user.profile.is_job == True:
         return redirect("/")
     form = ADDJOB()
     if request.method == "POST":
@@ -42,7 +43,7 @@ def Add_jobs(request):
     return render(request,"add_jobs.html",data)
 
 def Add_course(request):
-    if not request.user.is_staff:
+    if not request.user.profile.is_course == True:
         return redirect("/")
     form = ADDCOURSE()
     if request.method == "POST":
@@ -58,12 +59,26 @@ def Add_course(request):
     return render(request,"add_course.html",data)
 
 def Course(request):
+    if request.user.is_authenticated:
+        usr = request.user
+        profile = Profile.objects.get(user= usr)
+        if profile.is_course ==True:
+            userr = User.objects.get(username = usr)
+            userr.is_staff = True
+            userr.save()
+            group = Group.objects.filter(name='Add_Course').first()
+            group.user_set.add(usr)
+            permissions = Permission.objects.filter(content_type__app_label='courses')
+            for permission in permissions.all():
+                group.permissions.add(permission)
+        else:
+            messages.error(request,"Not Permitted")
     courseData = Courses.objects.all()
     data={
         'title':'Courses',
         'courseData':courseData
     }
-    return render(request,"courses.html",data)
+    return render(request,"courses.html",data)  
 
 def CourseDetails(request,slug):
     coursedetail = Courses.objects.get(course_slug=slug)
@@ -72,7 +87,21 @@ def CourseDetails(request,slug):
     }
     return render(request,"course-details.html",data)
 
-def Jobs(request):
+def Jobs(request):  
+    if request.user.is_authenticated:
+        usr = request.user
+        profile = Profile.objects.get(user= userr)
+        if profile.is_job ==True:
+            userr = User.objects.get(username = usr)
+            userr.is_staff = True
+            userr.save()
+            group = Group.objects.filter(name='Add_Jobs').first()
+            group.user_set.add(userr)
+            permissions = Permission.objects.filter(content_type__app_label='jobs')
+            for permission in permissions.all():
+                group.permissions.add(permission)
+        else:
+            messages.error(request,"Not Permitted")
     jobData = Job.objects.all()
     data={
         'title':'Jobs',
@@ -203,7 +232,6 @@ def password_reset_request(request):
     return render(request,"forgot_pass.html")
 
 def verify_otp(request):
-    print("----------------------in otp function")
     if request.method  == 'POST':
         otp1 = request.POST.get('otp')
         otp = int(otp1)
@@ -249,7 +277,6 @@ def update_profile(request,id):
     profile = Profile.objects.get(id=id)
     user = User.objects.get(id=id)
     combined_text = ""
-    print(profile.id,"==========",user.id,"================User Id, Profile")
     if request.method == "POST":
         username = request.POST.get("username")
         first_name = request.POST.get('first_name')
@@ -282,7 +309,6 @@ def update_profile(request,id):
         if skill:
             profile.skills.clear()
             for i in range(len(skill)):
-                print(skill[i])
                 profile.skills.add(int(skill[i]))
         
         sample= request.FILES.get('resume',None)
@@ -298,9 +324,7 @@ def update_profile(request,id):
                 user = request.user
                 if user:
                     p = Profile.objects.get(user=user)
-                    data = p.resume_data
-                    print(data, "-------------------data")  
-                    print(type(data), "-------------------data-Type")          
+                    data = p.resume_data         
                     combined_text += data
                 else:
                     combined_text = "Unable to add"

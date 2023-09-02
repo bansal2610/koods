@@ -97,7 +97,7 @@
                                         </div>
 
                                         <div class="form-outline col-md-12 mb-4">
-                                            <select class="js-select2" name="skills" multiple>
+                                            <select class="js-select2" name="skills" multiple required>
                                                 {% for i in skill %}
                                                 <option name="{{i.id}}" value="{{i.id}}">{{i.data}}</option>
                                                 {% endfor %}
@@ -108,7 +108,7 @@
 
 
                                         <div class="form-outline col-md-12 mb-4">
-                                            <input type="radio" name="gender" id="male" value="male"  
+                                            <input type="radio" name="gender" id="male" value="male" required 
                                                  />&nbsp;<label class="form-label" for="gender" >Male</label>&nbsp;
                                             <input type="radio" name="gender" id="female" value="female"
                                                  />&nbsp;<label class="form-label" for="gender">Female</label>&nbsp;

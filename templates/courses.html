@@ -23,7 +23,7 @@
     <!-- Courses Start -->
     <div class="container-xxl ">
         <div class="container my-5">
-            {% if user.is_authenticated and user.is_staff %}
+            {% if user.is_authenticated and user.profile.is_course == True %}
             <div style="float: right;">
                 <a href="/add_course"><button class="btn btn-grey">Add courses</button></a>
             </div>
