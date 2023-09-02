@@ -105,22 +105,23 @@
                                             <br>
                                             <label class="form-label" for="email">Skills</label>
                                         </div>
-
+                                        
 
                                         <div class="form-outline col-md-12 mb-4">
-                                            <input type="radio" name="gender" id="male" value="male" required 
+                                            
+                                            <input type="radio" name="gender" id="male" value="Male" required {% if user.profile.gender == "Male" %} checked {% endif %}
                                                  />&nbsp;<label class="form-label" for="gender" >Male</label>&nbsp;
-                                            <input type="radio" name="gender" id="female" value="female"
+                                             <input type="radio" name="gender" id="female" value="Female" {% if user.profile.gender == "Female" %} checked {% endif %}
                                                  />&nbsp;<label class="form-label" for="gender">Female</label>&nbsp;
-                                            <input type="radio" name="gender" id="other" value="other"
+                                            <input type="radio" name="gender" id="other" value="Other" {% if user.profile.gender == "Other" %} checked {% endif %}
                                                 />&nbsp;<label class="form-label" for="gender">Other</label>
                                             
                                         </div>
 
                                         <div class="form-outline col-md-12 mb-4">
-                                            <input type="tel" class="form-control form-control-lg" id="phone"
+                                            <input type="tel" class="form-control form-control-lg" id="phone" value="{{profile.phone}}"
                                                 name="phone" maxlength="10" placeholder="123-45-678"
-                                                pattern="[0-9]{3}[0-9]{2}[0-9]{5}" required>
+                                                pattern="[0-9]{3}[0-9]{2}[0-9]{5}" va required>
                                             <label class="form-label" for="email">Phone Number</label>
                                         </div>
 
@@ -154,6 +155,7 @@
 </section>
 
 <script src="/static/js/script1.js"></script>
+
 
 {% else %}
 
