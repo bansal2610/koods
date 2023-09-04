@@ -2,6 +2,7 @@ from django.db import models
 from tinymce.models import HTMLField
 from autoslug import AutoSlugField
 from django.contrib.auth.models import User
+from uploads.models import skil
 # from ckeditor.fields import RichTextField
 
 JOB_TYPE = [
@@ -21,9 +22,12 @@ class Job(models.Model):
     category = models.ForeignKey(Category,on_delete=models.CASCADE,null = True)
     job_title = models.CharField(max_length=100)
     job_type = models.CharField(choices=JOB_TYPE,default=None, null = True,max_length=1)
+    exp_required = models.CharField(max_length=100)
+    skills_req =  models.ManyToManyField(skil)
     job_des = HTMLField(blank=True, null=True)
     salary = models.CharField(max_length=20)
     company = models.CharField(max_length=100,null=False,default=None)
+    location = models.CharField(max_length=250)
     company_desc = HTMLField(blank=True, null=True)
     url = models.URLField(max_length=200)
     last_update = models.DateField()
@@ -43,3 +47,17 @@ class Applicant(models.Model):
 
     def __str__(self):
         return self.job.job_title
+
+
+# front==============
+# location 
+# exp. required
+# skills required xxxxxxxxxxxxxxxxxxxxxx
+# back===============
+# job details>>>>>
+# must have skills
+# good to have skills
+# industry type
+# education
+
+# similar jobs
