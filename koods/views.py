@@ -90,7 +90,7 @@ def CourseDetails(request,slug):
 def Jobs(request):  
     if request.user.is_authenticated:
         usr = request.user
-        profile = Profile.objects.get(user= userr)
+        profile = Profile.objects.get(user= usr)
         if profile.is_job ==True:
             userr = User.objects.get(username = usr)
             userr.is_staff = True
@@ -276,6 +276,7 @@ def update_profile(request,id):
     skills = skil.objects.all()
     profile = Profile.objects.get(id=id)
     user = User.objects.get(id=id)
+    print(user,"===============user")
     combined_text = ""
     if request.method == "POST":
         username = request.POST.get("username")
@@ -289,7 +290,7 @@ def update_profile(request,id):
         skill = request.POST.getlist("skills")
         resume = request.FILES.get("resume", None)
         image = request.FILES.get("image", None)
-        
+        print(username,"===============username")
         user.username = username
         user.first_name = first_name
         user.last_name = last_name
@@ -321,9 +322,9 @@ def update_profile(request,id):
                 combined_text += text
         else:
             if request.user:
-                user = request.user
-                if user:
-                    p = Profile.objects.get(user=user)
+                userr = request.user
+                if userr:
+                    p = Profile.objects.get(user=userr)
                     data = p.resume_data         
                     combined_text += data
                 else:

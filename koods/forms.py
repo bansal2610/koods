@@ -8,7 +8,7 @@ from courses.models import Courses
 class ADDJOB(forms.ModelForm):
     class Meta:
         model = Job
-        fields = ['company','job_title','job_des','job_image']
+        fields = ['job_title','job_type','job_des','salary','company','company_desc','url','last_update','job_image','is_published','is_closed']
 
 class ADDCOURSE(forms.ModelForm):
     class Meta:
