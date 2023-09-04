@@ -16,10 +16,9 @@ class Category(models.Model):
     def __str__(self):
         return self.name
 
-    
-
 class Job(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE,null=True,blank=True,default=None)
+    category = models.ForeignKey(Category,on_delete=models.CASCADE,null = True)
     job_title = models.CharField(max_length=100)
     job_type = models.CharField(choices=JOB_TYPE,default=None, null = True,max_length=1)
     job_des = HTMLField(blank=True, null=True)
@@ -28,11 +27,19 @@ class Job(models.Model):
     company_desc = HTMLField(blank=True, null=True)
     url = models.URLField(max_length=200)
     last_update = models.DateField()
+    timestamp = models.DateTimeField(auto_now=True)
     job_image = models.ImageField(upload_to='job/', default = "job/jobs-1.jpg")
     job_slug = AutoSlugField(populate_from = 'job_title',unique=True,null=True,default=None)
     is_published = models.BooleanField(default=False)
     is_closed = models.BooleanField(default=False)
 
-
     def __str__(self):
         return self.job_title
+
+class Applicant(models.Model):
+    user = models.ForeignKey(User, null=True,blank=True, default=None,on_delete=models.CASCADE)
+    job = models.ForeignKey(Job, null=True,blank=True, default=None, on_delete=models.CASCADE)
+    time = models.DateTimeField(auto_now=True, auto_now_add=False)
+
+    def __str__(self):
+        return self.job.job_title
