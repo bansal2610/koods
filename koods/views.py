@@ -185,8 +185,7 @@ class ProfileUpdateView(LoginRequiredMixin, TemplateView):
                         page = reader.pages[i]  
                         text = page.extract_text()
                     profile_form.instance.resume_data = text
-                
-                
+                                
                 user_form.save()
                 profile_form.save()
                 messages.error(request, 'Your profile is updated successfully!')
@@ -275,8 +274,8 @@ def change_pass(request):
 def update_profile(request,id):
     skills = skil.objects.all()
     profile = Profile.objects.get(id=id)
+    num= str(profile.phone)[3::]
     user = User.objects.get(id=id)
-    print(user,"===============user")
     combined_text = ""
     if request.method == "POST":
         username = request.POST.get("username")
@@ -290,7 +289,6 @@ def update_profile(request,id):
         skill = request.POST.getlist("skills")
         resume = request.FILES.get("resume", None)
         image = request.FILES.get("image", None)
-        print(username,"===============username")
         user.username = username
         user.first_name = first_name
         user.last_name = last_name
@@ -340,7 +338,8 @@ def update_profile(request,id):
 
     context={
         "skill":skills,
-        "profile":profile
+        "profile":profile,
+        "num":num
     }
 
     return render(request,'update_profile.html',context)
