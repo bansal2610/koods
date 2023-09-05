@@ -45,18 +45,17 @@
                   <p class="mb-3">
                     <i class="bi bi-briefcase-fill text-primary me-2"></i>{{ n.exp_required }}
                   </p>
-                  <p class="mb-3">
-                  {{ n.skills_req }}
-                  </p>
-                  {% for i in skills_req %}
-                  <div class="mb-0 skills">{{i}}</div>
-                  {% endfor %}
+                 
+                    {% for j in n.skills_req.all %}
+                      <div class="mb-0 skills2">{{j}}</div>
+                    {% endfor %}
+                
                 </div>
                 <div class="position-relative mt-auto">
                   {% if n.job_image != null %}
                     <img class="img-fluid-new" src="/media/{{ n.job_image }}" alt="" />
                     <div class="courses-overlay">
-                      <a class="btn btn-outline-primary border-2" href="/job-details/{{ n.job_slug }}">Apply</a>
+                    <a class="btn btn-outline-primary border-2" href="/job-details/{{ n.job_slug }}">Apply</a>
                     </div>
                   {% endif %}
                 </div>

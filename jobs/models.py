@@ -6,9 +6,9 @@ from uploads.models import skil
 # from ckeditor.fields import RichTextField
 
 JOB_TYPE = [
-    ("1","Full Time"),
-    ("2","Part Time"),
-    ("3","Internship")
+    ("Full Time","Full Time"),
+    ("Part Time","Part Time"),
+    ("Internship","Internship")
 ]
 
 class Category(models.Model):
@@ -18,10 +18,11 @@ class Category(models.Model):
         return self.name
 
 class Job(models.Model):
+    job_id = models.AutoField(primary_key=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE,null=True,blank=True,default=None)
     category = models.ForeignKey(Category,on_delete=models.CASCADE,null = True)
     job_title = models.CharField(max_length=100)
-    job_type = models.CharField(choices=JOB_TYPE,default=None, null = True,max_length=1)
+    job_type = models.CharField(choices=JOB_TYPE,default=None, null = True,max_length=50)
     exp_required = models.CharField(max_length=100)
     skills_req =  models.ManyToManyField(skil)
     job_des = HTMLField(blank=True, null=True)

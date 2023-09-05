@@ -111,8 +111,10 @@ def Jobs(request):
 
 def jobDetails(request,slug):
     jobdetail = Job.objects.get(job_slug=slug)
+    jb = jobdetail.skills_req.all()
     data={
-        'jobdetail':jobdetail
+        'jobdetail':jobdetail,
+        'jb':jb
     }
     return render(request,"job-details.html",data)
 

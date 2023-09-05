@@ -851,6 +851,16 @@ a:hover {
     margin-bottom: 10px !important;
 }
 
+.skills2 {
+    border: solid #ffa7aa 2px;
+    border-radius: 10%;
+    color: darkred;
+    background-color: #ffa7aa;
+    display: inline-block;
+    padding: 3px;
+    margin-bottom: 10px !important;
+    /* display: contents; */
+}
 .form-check {
     display: inline-block;
 }
