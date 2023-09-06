@@ -26,37 +26,69 @@ def Home(request):
     }
     return render(request,"home.html",data)
 
-def Add_jobs(request):
-    if not request.user.profile.is_job == True:
+def Jobprofile(request):
+    if not request.user.is_authenticated:
         return redirect("/")
-    form = ADDJOB()
-    if request.method == "POST":
-        form = ADDJOB(request.POST)
-        if form.is_valid():
-            form.save()
-            return redirect('/jobs/')
+    usr = request.user
+    jobData = Job.objects.filter(user=usr)
+    print(jobData,"===========jobdata")
+    data={
+        'title':'Learnkoods',
+        'jobData':jobData
+    }
+    return render(request,"jobprofile.html",data)
+
+def Jobs(request):  
+    if request.user.is_authenticated:
+        usr = request.user
+        profile = Profile.objects.get(user= usr)
+        if profile.is_job ==True:
+            userr = User.objects.get(username = usr)
+            userr.is_staff = True
+            userr.save()
+            group = Group.objects.filter(name='Add_Jobs').first()
+            group.user_set.add(userr)
+            permissions = Permission.objects.filter(content_type__app_label='jobs')
+            for permission in permissions.all():
+                group.permissions.add(permission)
         else:
-            print("Form Error: ",form.errors)
+            messages.error(request,"Not Permitted")
+    jobData = Job.objects.all().order_by("-timestamp")
+    data={
+        'title':'Jobs',
+        'jobData':jobData
+    }
+    return render(request,"jobs.html",data)
+
+def jobDetails(request,slug):
+    jobdetail = Job.objects.get(job_slug=slug)
+    jb = jobdetail.skills_req.all()
+    data={
+        'jobdetail':jobdetail,
+        'jb':jb
+    }
+    return render(request,"job-details.html",data)
+
+def Add_jobs(request):
+    if request.user.is_authenticated:
+        if not request.user.profile.is_job == True:
+            return redirect("/")
+        form = ADDJOB()
+        if request.method == "POST":
+            form = ADDJOB(request.POST, user=request.user)
+            if form.is_valid():
+                instance = form.save(commit=False)
+                instance.user = request.user
+                instance.save()
+                return redirect('/jobs/')
+            else:
+                print("Form Error: ",form.errors)
+    else:
+        return redirect("/")
     data={
         'form':form
     }
     return render(request,"add_jobs.html",data)
-
-def Add_course(request):
-    if not request.user.profile.is_course == True:
-        return redirect("/")
-    form = ADDCOURSE()
-    if request.method == "POST":
-        form = ADDCOURSE(request.POST)
-        if form.is_valid():
-            form.save()
-            return redirect('/courses/')
-        else:
-            print("Form Error: ",form.errors)
-    data={
-        'form':form
-    }
-    return render(request,"add_course.html",data)
 
 def Course(request):
     if request.user.is_authenticated:
@@ -87,36 +119,21 @@ def CourseDetails(request,slug):
     }
     return render(request,"course-details.html",data)
 
-def Jobs(request):  
-    if request.user.is_authenticated:
-        usr = request.user
-        profile = Profile.objects.get(user= usr)
-        if profile.is_job ==True:
-            userr = User.objects.get(username = usr)
-            userr.is_staff = True
-            userr.save()
-            group = Group.objects.filter(name='Add_Jobs').first()
-            group.user_set.add(userr)
-            permissions = Permission.objects.filter(content_type__app_label='jobs')
-            for permission in permissions.all():
-                group.permissions.add(permission)
+def Add_course(request):
+    if not request.user.profile.is_course == True:
+        return redirect("/")
+    form = ADDCOURSE()
+    if request.method == "POST":
+        form = ADDCOURSE(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('/courses/')
         else:
-            messages.error(request,"Not Permitted")
-    jobData = Job.objects.all()
+            print("Form Error: ",form.errors)
     data={
-        'title':'Jobs',
-        'jobData':jobData
+        'form':form
     }
-    return render(request,"jobs.html",data)
-
-def jobDetails(request,slug):
-    jobdetail = Job.objects.get(job_slug=slug)
-    jb = jobdetail.skills_req.all()
-    data={
-        'jobdetail':jobdetail,
-        'jb':jb
-    }
-    return render(request,"job-details.html",data)
+    return render(request,"add_course.html",data)
 
 def signUp(request):
     form = CreateUserForm()

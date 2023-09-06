@@ -34,9 +34,12 @@ class Job(models.Model):
     last_update = models.DateField()
     timestamp = models.DateTimeField(auto_now=True)
     job_image = models.ImageField(upload_to='job/', default = "job/jobs-1.jpg")
-    job_slug = AutoSlugField(populate_from = 'job_title',unique=True,null=True,default=None)
+    job_slug = AutoSlugField(populate_from = 'get_full_slug',unique=True,null=True,default=None)
     is_published = models.BooleanField(default=False)
     is_closed = models.BooleanField(default=False)
+
+    def get_full_slug(self):
+        return f"{self.job_title} at {self.company}"
 
     def __str__(self):
         return self.job_title

@@ -38,6 +38,7 @@ urlpatterns = [
     path('change_password/',views.change_pass,name="change_pass"),
     path('verify-otp/',views.verify_otp,name="verify_otp"),
     path('update_profile/<int:id>/', views.update_profile),
+    path('jobprofile/',views.Jobprofile),
     # path("data/",views.insert_skill),
 ]
 urlpatterns += staticfiles_urlpatterns()
