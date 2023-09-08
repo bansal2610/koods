@@ -204,20 +204,3 @@ function openCity(evt, cityName) {
 
 // Get the element with id="defaultOpen" and click on it
 document.getElementById("defaultOpen").click();
-
-
-
-
-
-// edit profile
-
-$(document).ready(function(){
-    $(".fcheck1").click(function(){
-      $("#check1").hide(500);
-      $("#check2").show(500);
-    });
-    $(".fcheck2").click(function(){
-      $("#check1").show(500);
-      $("#check2").hide(500);
-    });
-  });

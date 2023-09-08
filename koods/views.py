@@ -3,7 +3,8 @@ from django.shortcuts import redirect, render
 from django.contrib.auth import authenticate,login,logout
 from courses.models import Courses
 from jobs.models import Job
-from koods.forms import ADDCOURSE, CreateUserForm, ProfileForm, UserForm, ADDJOB
+from koods.forms import ADDCOURSE, CreateUserForm, ADDJOB
+# from koods.forms import ProfileForm, UserForm
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import TemplateView
 from django.contrib import messages
@@ -30,11 +31,11 @@ def Jobprofile(request):
     if not request.user.is_authenticated:
         return redirect("/")
     usr = request.user
-    jobData = Job.objects.filter(user=usr)
-    print(jobData,"===========jobdata")
+    jobprofile = Job.objects.filter(user=usr)
+    print(jobprofile,"===========jobdata")
     data={
         'title':'Learnkoods',
-        'jobData':jobData
+        'jobprofile':jobprofile
     }
     return render(request,"jobprofile.html",data)
 
@@ -178,56 +179,63 @@ def logOut(request):
     print("Logout Successfull")
     return redirect('/')
 
-class ProfileUpdateView(LoginRequiredMixin, TemplateView):
-    user_form = UserForm
-    profile_form = ProfileForm
-    template_name = 'profile.html'
-    login_url="/sign-in/"
+def ProfileUpdateView(request):
+    usr = request.user
+    pro = Profile.objects.get(user=usr)
+    print(pro,"================profile")
+    data={
+        'title':'Learnkoods'
+    }
+    return render(request,"profile.html",data)
+
+# class ProfileUpdateView(LoginRequiredMixin, TemplateView):
+#     user_form = UserForm
+#     profile_form = ProfileForm
+#     template_name = 'profile.html'
+#     login_url="/sign-in/"
     
 
-    def post(self, request):
-        post_data = request.POST or None
-        file_data = request.FILES or None
-        usr = request.user
-        p = Profile.objects.get(user= usr)
-        sk = p.skills.all()
+#     def post(self, request):
+#         post_data = request.POST or None
+#         file_data = request.FILES or None
+#         usr = request.user
+#         p = Profile.objects.get(user= usr)
+#         sk = p.skills.all()
 
-        user_form = UserForm(post_data, instance=request.user)
-        profile_form = ProfileForm(post_data, file_data, instance=request.user.profile)
-        try:
-            if user_form.is_valid() and profile_form.is_valid():
-                sample= request.FILES['resume']
-                if sample:
-                    reader = PdfReader(sample)
-                    num_pages = len(reader.pages)
-                    for i in range(num_pages):
-                        page = reader.pages[i]  
-                        text = page.extract_text()
-                    profile_form.instance.resume_data = text
+#         user_form = UserForm(post_data, instance=request.user)
+#         profile_form = ProfileForm(post_data, file_data, instance=request.user.profile)
+#         try:
+#             if user_form.is_valid() and profile_form.is_valid():
+#                 sample= request.FILES['resume']
+#                 if sample:
+#                     reader = PdfReader(sample)
+#                     num_pages = len(reader.pages)
+#                     for i in range(num_pages):
+#                         page = reader.pages[i]  
+#                         text = page.extract_text()
+#                     profile_form.instance.resume_data = text
                                 
-                user_form.save()
-                profile_form.save()
-                messages.error(request, 'Your profile is updated successfully!')
-                return HttpResponseRedirect(reverse_lazy('profile'))
-        except Exception as e:
-            messages.error(request, "Not found")
+#                 user_form.save()
+#                 profile_form.save()
+#                 messages.error(request, 'Your profile is updated successfully!')
+#                 return HttpResponseRedirect(reverse_lazy('profile'))
+#         except Exception as e:
+#             messages.error(request, "Not found")
 
-        context = self.get_context_data(
-                                        user_form=user_form,
-                                        profile_form=profile_form,
-                                        skill = sk
-                                    )
+#         context = self.get_context_data(
+#                                         user_form=user_form,
+#                                         profile_form=profile_form,
+#                                         skill = sk
+#                                     )
 
-        return self.render_to_response(context)     
+#         return self.render_to_response(context)     
 
-    def get(self, request, *args, **kwargs):
-        return self.post(request, *args, **kwargs)
+#     def get(self, request, *args, **kwargs):
+#         return self.post(request, *args, **kwargs)
 
-
-random = random.randint(999,9999)
 def password_reset_request(request):
-    global random
-    request.session["otp"] = random
+    rndm = random.randint(999,9999)
+    request.session["otp"] = rndm
     if request.method == "POST":
         email = request.POST.get('email')
         if User.objects.filter(email = email).exists():
@@ -238,7 +246,7 @@ def password_reset_request(request):
         if user:
             request.session["username"] = user.email
             send_mail("Forgot Password",
-                f"Your OTP :{random}",
+                f"Your OTP :{rndm}",
                 EMAIL_HOST_USER,
                 [user.email],
                 fail_silently=False,
@@ -292,7 +300,9 @@ def change_pass(request):
 
 def update_profile(request,id):
     skills = skil.objects.all()
+    print(id,"===================id")
     profile = Profile.objects.get(id=id)
+    print(profile,"================profile")
     num= str(profile.phone)[3::]
     user = User.objects.get(id=id)
     combined_text = ""

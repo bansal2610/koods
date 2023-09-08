@@ -13,7 +13,6 @@
 {% endfor %}
 </div> {% endcomment %}
 <div class="container my-5">
-    <h3>Posted Jobs</h3>
     {% if user.is_authenticated and user.profile.is_job == True %}
         <div style="float: right;">
             <a href="/add_jobs"><button class="btn btn-grey">Add Jobs</button></a>
@@ -23,16 +22,18 @@
     <thead>
         <tr>
           <th scope="col">S No.</th>
-          <th scope="col">Title</th>
+          <th scope="col">Company</th>
+          <th scope="col">Job Title</th>
           <th scope="col">View</th>
           <th scope="col">Edit</th>
           <th scope="col">Delete</th>
         </tr>
       </thead>
       <tbody>
-        {% for i in jobData %}
+        {% for i in jobprofile %}
         <tr>
           <th scope="row">{{forloop.counter}}</th>
+          <td>{{i.company}}</td>
           <td>{{i}}</td>
           <td><a href ="/job-details/{{i.job_slug}}" ><button class="btn btn-primary">View</button></a></td>
           <td><a href ="/job-details/{{i.job_slug}}" ><button class="btn btn-primary">Edit</button></a></td>

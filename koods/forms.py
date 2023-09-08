@@ -50,19 +50,19 @@ SKILL_CHOICES = [
     ('Python','Python'),('Django','Django'),('HTML','HTML'),('CSS','CSS'),('Bootstrap','Bootstrap'),('Wordpress','Wordpress'),('Java','Java'),('Shopify','Shopify')
 ]
 
-class ProfileForm(forms.ModelForm):
-    gender = forms.ChoiceField(choices=GENDER_CHOICES,widget=forms.RadioSelect)
-    skills = forms.MultipleChoiceField(choices=SKILL_CHOICES,widget=forms.CheckboxSelectMultiple)
-    class Meta:
-        model = Profile
-        fields = [
-            'profile_image',
-            'profile_desc',
-            'resume',
-            'resume_data',
-            'skills',
-            'gender',
-            'phone',
-            'institution',
-        ]
-        labels = {'institution':'Institution/Organization','profile_desc':'About','profile_image':'Profile Image','resume':'Resume'}
+# class ProfileForm(forms.ModelForm):
+#     gender = forms.ChoiceField(choices=GENDER_CHOICES,widget=forms.RadioSelect)
+#     skills = forms.MultipleChoiceField(choices=SKILL_CHOICES,widget=forms.CheckboxSelectMultiple)
+#     class Meta:
+#         model = Profile
+#         fields = [
+#             'profile_image',
+#             'profile_desc',
+#             'resume',
+#             'resume_data',
+#             'skills',
+#             'gender',
+#             'phone',
+#             'institution',
+#         ]
+#         labels = {'institution':'Institution/Organization','profile_desc':'About','profile_image':'Profile Image','resume':'Resume'}

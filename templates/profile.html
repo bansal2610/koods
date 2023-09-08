@@ -38,12 +38,8 @@
 
                                     </div>
                                     <div class="col-sm-4">
-                                        <button class="btn btn-primary edit fcheck1">Edit Profile <i
-                                                class="bi bi-pencil-square"></i></button>
-                                        <div class="mt-5">
-                                            <a href="/update_profile/{{user.id}}/"><button class="btn btn-primary edit">Edit Profile 2 <i
+                                            <a href="/update_profile/{{user.id}}/"><button class="btn btn-primary edit">Edit Profile <i
                                                     class="bi bi-pencil-square"></i></button></a>
-                                        </div>
                                     </div>
 
                                 </div>
@@ -170,37 +166,6 @@
 
             </div>
 
-            <div class="row pt-4" id="check2" style="display: none;">
-                <div class="col-md-12">
-                    <div class="row">
-
-                        <div class="col-md-4">
-                            <div class="card mb-4">
-                                <div class="card-body">
-                                    <button class="btn btn-primary fcheck2">Back To Profile <i
-                                            class="bi bi-box-arrow-left"></i></button>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="col-md-8">
-                            <div class="card mb-4">
-                                <div class="card-body p-4 p-lg-5 text-black">
-
-                                    <form method="POST" enctype="multipart/form-data">
-                                        {% csrf_token %}
-                                        {{user_form|crispy}}
-                                        {{profile_form|crispy}}
-                                        <button type="submit" class="btn btn-success btn-block">Update</button>
-                                    </form>
-
-                                </div>
-                            </div>
-                        </div>
-
-                    </div>
-                </div>
-            </div>
         </div>
 
         <div id="Registration" class="tabcontent">
