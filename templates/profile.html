@@ -13,16 +13,35 @@
 {% endfor %}
 
 <section class="container-fluid px-0">
+
     <div class="row">
-        <div class="tab col-md-4">
+        {% comment %} <div class="tab col-md-4">
             <button class="tablinks" onclick="openCity(event, 'Profile')" id="defaultOpen">Profile</button>
             <button class="tablinks" onclick="openCity(event, 'Registration')">Registration</button>
             <button class="tablinks" onclick="openCity(event, 'Settings')">Settings</button>
+        </div> {% endcomment %}
+        <div class="tab">
+
+            <ul class="nav flex-column">
+                <li class="nav-item">
+                  <a href="" class="lsidebar">Profile</a>
+                </li>
+                <li class="nav-item">
+                   <a href="" class="lsidebar">Registration</a>
+                </li>
+                <li class="nav-item">
+                   <a href="" class="lsidebar">Settings</a>
+                </li>
+                <li class="nav-item">
+                   <a href="/update_profile/{{user.id}}/" class="lsidebar">Edit Profile <i class="bi bi-pencil-square"></i></button></a>
+                </li>
+              </ul>
+            
         </div>
 
         <div id="Profile" class="tabcontent">
 
-            <div class="row pt-4" id="check1">
+            <div class="row pt-4">
 
                 <div class="col-md-6">
                     <div class="col-md-12">
@@ -37,11 +56,15 @@
                                         <p class="text-muted px-3 mb-0">{{user.username}}</p>
 
                                     </div>
-                                    <div class="col-sm-4">
+                                    {% comment %} <div class="col-sm-4">
                                             <a href="/update_profile/{{user.id}}/"><button class="btn btn-primary edit">Edit Profile <i
                                                     class="bi bi-pencil-square"></i></button></a>
-                                    </div>
-
+                                    </div> {% endcomment %}
+                                    {% comment %} <div class="col-sm-4">
+                                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+                                        Launch demo modal
+                                    </button>
+                                </div> {% endcomment %}
                                 </div>
                                 <hr>
                                 <div class="row">
@@ -168,7 +191,7 @@
 
         </div>
 
-        <div id="Registration" class="tabcontent">
+        {% comment %} <div id="Registration" class="tabcontent">
             <h3 class="pt-4">Registration</h3>
 
         </div>
@@ -176,19 +199,55 @@
         <div id="Settings" class="tabcontent">
             <h3 class="pt-4">Settings</h3>
 
+        </div> {% endcomment %}
+    </div>
+
+<!-- Modal -->
+
+{% if pro == None %}
+    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Industry</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+            </button>
+            </div>
+            <div class="modal-body">
+            <form method="post">
+                {% csrf_token %}
+                <div class="form-outline mb-4">
+                <input type="text" name="industry" id="industry" class="form-control form-control-lg" required />
+                <label class="form-label" for="otp">Work At</label>
+        
+                <div class="form-outline mb-4">
+                <select id="someSelectElement" name="position" class="form-select" aria-label="Default select example" required>
+                    <option selected>Select Position</option>
+                    {% for i in inds %}
+                    <option value="{{i.id}}" required>{{i.name}}</option>
+                    {% endfor %}
+                </select>
+                </div>
+                <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="submit" class="btn btn-success btn-block" >Submit</button>
+                </div>
+            </form>
+            </div>
+        </div>
         </div>
     </div>
+{% endif %}
+
+
 </section>
 
-
-{% else %}
-
-<div class="m-5">
-    <center>
-        <h2>No Profile Yet</h2>
-        <a href="/sign-up"><button class="btn px-5 btn-primary btn-lg btn-block" type="submit">Sign Up</button></a>
-    </center>
-</div>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function() {
+        $('#exampleModal').modal('show');
+    });
+</script>
 
 {% endif %}
 

@@ -40,6 +40,8 @@ urlpatterns = [
     path('verify-otp/',views.verify_otp,name="verify_otp"),
     path('update_profile/<int:id>/', views.update_profile),
     path('jobprofile/',views.Jobprofile),
+    path('error-404/',views.Error)
+    # path('work_p/', views.work_position, name="work_prosition"),
     # path("data/",views.insert_skill),
 ]
 urlpatterns += staticfiles_urlpatterns()

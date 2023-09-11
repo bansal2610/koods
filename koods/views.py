@@ -1,5 +1,5 @@
 from django.http import HttpResponse, HttpResponseRedirect
-from django.shortcuts import redirect, render
+from django.shortcuts import get_object_or_404, redirect, render
 from django.contrib.auth import authenticate,login,logout
 from courses.models import Courses
 from jobs.models import Job
@@ -11,7 +11,7 @@ from django.contrib import messages
 from django.urls import reverse_lazy
 from PyPDF2 import PdfReader
 from koods.settings import EMAIL_HOST_USER
-from uploads.models import Profile, skil
+from uploads.models import Industry, Profile, skil
 import ast
 from django.conf import settings
 from django.core.mail import BadHeaderError, send_mail
@@ -20,6 +20,12 @@ from django.contrib.auth.hashers import make_password
 from django.contrib.auth import get_user
 import random
 from uploads.views import data
+
+def Error(request):
+    data={
+        'title':'Error 404'
+    }
+    return render(request,"404.html",data)
 
 def Home(request):
     data={
@@ -157,20 +163,31 @@ def signUp(request):
     return render(request,"signup.html",data)
 
 def signIn(request):
+    flag = "123"
     if request.method == "POST":
         username = request.POST.get('username')
         password = request.POST.get('password')
-
+        
         user = authenticate(request,username=username,password=password)
         try:
             if user is not None:
                 login(request,user)
                 messages.success(request, f'Login Succesfull, Welcome {username}')
+                if get_object_or_404(Profile, user = request.user):
+                    p = get_object_or_404(Profile, user=request.user)
+
+                    if p.work_at is None:
+                        flag="yes"
+                        print(flag,"============flag")
+                        return redirect("/user-profile")
+                    print(p.work_at, "============Work")
+                    flag="NO"
                 return redirect('/user-profile')
         except:
             messages.error(request, 'Invalid User')
     data={
-        'title':'Sign In'
+        'title':'Sign In',
+        'flag': flag
     }
     return render(request,"signin.html",data)
 
@@ -179,12 +196,50 @@ def logOut(request):
     print("Logout Successfull")
     return redirect('/')
 
+# def work_position(request):
+#     inds = Industry.objects.all()
+#     if request.method == "POST":
+#         wor_at = request.POST.get("industry")
+#         posi = request.POST.get("position")
+#         indus_id = Industry.objects.get(id=posi)
+#         p = Profile.objects.get(user=request.user)
+#         p.work_at = wor_at
+#         p.position = indus_id
+#         p.save()
+#         messages.success(request, "Thank You for Information")
+#         return redirect("/user-profile")
+
+#     context = {
+#         "inds":inds
+#     }
+#     return redirect(request,context)
+
 def ProfileUpdateView(request):
+    if not request.user.is_authenticated:
+        return redirect("/error-404/")
     usr = request.user
     pro = Profile.objects.get(user=usr)
-    print(pro,"================profile")
+    pro_skill = pro.skills.all()
+
+
+
+    inds = Industry.objects.all()
+    if request.method == "POST":
+        wor_at = request.POST.get("industry")
+        posi = request.POST.get("position")
+        indus_id = Industry.objects.get(id=posi)
+        p = Profile.objects.get(user=request.user)
+        p.work_at = wor_at
+        p.position = indus_id
+        p.save()
+        messages.success(request, "Thank You for Information")
+        return redirect("/user-profile")
+
     data={
-        'title':'Learnkoods'
+        'title':'Learnkoods',
+        'skill' :pro_skill,
+        "inds":inds,
+        "pro":pro.work_at
     }
     return render(request,"profile.html",data)
 
@@ -295,13 +350,15 @@ def change_pass(request):
 #     skil.objects.all().delete()
 #     d = data()
 #     for i in range(len(d)):
+#         Industry.objects.create(name = d[i])
 #         skil.objects.create(data = d[i])
 #     return HttpResponse("skill Created")
 
 def update_profile(request,id):
     skills = skil.objects.all()
+    inds= Industry.objects.all()
     print(id,"===================id")
-    profile = Profile.objects.get(id=id)
+    profile = Profile.objects.get(profile_id=id)
     print(profile,"================profile")
     num= str(profile.phone)[3::]
     user = User.objects.get(id=id)
@@ -312,6 +369,8 @@ def update_profile(request,id):
         last_name = request.POST.get("last_name")
         email = request.POST.get("email")
         about = request.POST.get("about")
+        work_at = request.POST.get("work_at")
+        position = request.POST.get("position")
         gender = request.POST.get("gender")
         phone = request.POST.get("phone")
         inst = request.POST.get("inst")
@@ -324,7 +383,10 @@ def update_profile(request,id):
         user.email = email
         profile.gender = gender
         profile.phone = phone
+        profile.work_at = work_at
+        profile.position = position
         profile.profile_desc = about
+
         profile.institution = inst
         if image or resume:
             profile.profile_image = image
@@ -368,7 +430,112 @@ def update_profile(request,id):
     context={
         "skill":skills,
         "profile":profile,
-        "num":num
+        "num":num,
+        "inds":inds,
+        "title":'Update Profile'
     }
 
     return render(request,'update_profile.html',context)
+
+
+
+
+# def update_profile(request,id):
+#     lst = []
+#     skills = skil.objects.all()
+#     for i in skills:
+#         lst.append(i)
+#     print(lst, "========lst")
+#     profile = Profile.objects.get(profile_id=id)
+#     user = User.objects.get(id=id)
+
+#     combined_text = ""
+#     if request.method == "POST":
+#         username = request.POST.get("username")
+#         first_name = request.POST.get('first_name')
+#         last_name = request.POST.get("last_name")
+#         email = request.POST.get("email")
+#         about = request.POST.get("about")
+#         gender = request.POST.get("gender")
+#         phone = request.POST.get("phone")
+#         inst = request.POST.get("inst")
+#         skill = request.POST.getlist("skills")
+#         resume = request.FILES.get("resume", None)
+#         image = request.FILES.get("image", None)
+        
+#         user.username = username
+#         user.first_name = first_name
+#         user.last_name = last_name
+#         user.email = email
+#         profile.gender = gender
+#         profile.phone = phone
+#         profile.profile_desc = about
+#         profile.institution = inst
+#         if image or resume:
+#             profile.profile_image = image
+#             profile.resume = resume
+#         # try:
+#         #     p = Profile.objects.get(id = id)
+#         #     print(p.user)
+#         # except:
+#         #     raise ValueError
+#         if skill:
+#             print(skill[0], "==========Skill index")
+#             lst = []
+#             print(len(skill),"==========skill Length")
+#             for i in range(len(skill)):
+#                 if skill not in lst:
+#                     ks = skil.objects.create(data=skill[i])
+#                     print(ks, "==============KS")
+#                     print(ks.id, "==============KS ID")
+#                     profile.skills.add(int(ks.id))
+#                     print("Hello")
+#                     # for j in range(len(skill)):
+#                     #     profile.skills.clear()
+#                     #     profile.skills.add(int(skill[j]))
+#             print(type(skill),"=============TYPE")
+#             if type(skill) == list:
+#                 for i in range(len(skill)):
+#                     if skill in lst:
+#                         profile.skills.add(data=(skill[i]))
+#                         print("world")
+#                     #     sk = skil.objects.get(data=str(i))
+#                     # print(sk.id, "==============SK ID")
+#                     # profile.skills.add(int(sk.id))
+
+#             # profile.skills.clear()
+#             # for i in range(len(skill)):
+#             #     profile.skills.add(int(skill[i]))
+        
+#         sample= request.FILES.get('resume',None)
+#         if sample:
+#             reader = PdfReader(sample)
+#             num_pages = len(reader.pages)
+#             for i in range(num_pages):
+#                 page = reader.pages[i]  
+#                 text = page.extract_text()
+#                 combined_text += text
+#         else:
+#             if request.user:
+#                 user = request.user
+#                 if user:
+#                     p = Profile.objects.get(user=user)
+#                     data = p.resume_data         
+#                     combined_text += data
+#                 else:
+#                     combined_text = "Unable to add"
+#                     messages.error(request,"User Not Found")
+        
+#         profile.resume_data = combined_text
+#         profile.save()
+#         user.save()
+#         print("success")
+#         return redirect("/user-profile/")
+    
+
+#     context={
+#         "skill":skills,
+#         "profile":profile
+#     }
+
+#     return render(request,'update_profile.html',context)

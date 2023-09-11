@@ -11,6 +11,11 @@
     padding-bottom: 6rem;
 }
 
+.py-8{
+    padding-top: 8rem;
+    padding-bottom: 8rem;
+}
+
 .my-6 {
     margin-top: 6rem;
     margin-bottom: 6rem;
@@ -983,4 +988,18 @@ a:hover {
 
   .select2-container--default .select2-selection--multiple .select2-selection__choice {
     padding-left: 20px !important;
+  }
+
+
+  .lsidebar{
+    text-decoration: none;
+    font-size: 22px;
+    color: #ffffff;
+    display: block;
+    padding: 15px 25px;
+  }
+
+  .lsidebar:hover {
+    color: black;
+    background-color: #cccccc;
   }

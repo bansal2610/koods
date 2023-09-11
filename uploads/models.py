@@ -4,6 +4,11 @@ from django.db.models.signals import post_save
 from django.dispatch import receiver
 from phonenumber_field.modelfields import PhoneNumberField
 
+class Industry(models.Model):
+    name = models.CharField(max_length=200, null=True, blank=True)
+
+    def __str__(self):
+        return self.name
 
 class skil(models.Model):
     data = models.CharField(max_length=200, null=True, blank=True)
@@ -12,7 +17,7 @@ class skil(models.Model):
         return self.data
 
 class Profile(models.Model):
-
+    profile_id = models.AutoField(primary_key=True)
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     profile_image = models.ImageField(upload_to="profile/",null=True,default = "profile/profile-default.jpg")
     profile_desc = models.TextField(max_length=250,blank=True)
@@ -22,11 +27,13 @@ class Profile(models.Model):
     skills = models.ManyToManyField(skil)
     phone = PhoneNumberField(region="IN",null=True, blank=True,unique=True)
     gender = models.CharField(max_length=100)
+    work_at = models.CharField(max_length=100, default=None, null=True, blank=True)
+    position = models.ForeignKey(Industry, on_delete=models.CASCADE, null=True, blank=True, default=None)
     is_job = models.BooleanField(default=False)
     is_course = models.BooleanField(default=False)
 
     def __str__(self):
-        return '%s %s' % (self.user.first_name, self.user.last_name)
+        return '%s %s' % (self.user.username, self.user.last_name)
 
 
 @receiver(post_save, sender=User)
