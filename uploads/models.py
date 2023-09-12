@@ -15,6 +15,10 @@ class skil(models.Model):
 
     def __str__(self):
         return self.data
+    
+# class workExp(models.Model):
+#     designation = models.CharField(max_length=50,blank=True)
+#     sector = models.CharField(max_length=50,blank=True)
 
 class Profile(models.Model):
     profile_id = models.AutoField(primary_key=True)

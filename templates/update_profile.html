@@ -131,17 +131,17 @@
 
                                         <div class="form-outline mb-4">
                                             <select id="someSelectElement" name="position" class="form-select" aria-label="Default select example" required>
-                                                <option selected>Select Position</option>
+                                                {% if user.profile.position %}
+                                                    <option selected value="{{user.profile.position.id}}">{{user.profile.position}}</option>
+                                                {% else %}
+                                                    <option value="">Select Position</option>
+                                                {% endif %}
                                                 {% for i in inds %}
                                                 <option value="{{i.id}}">{{i.name}}</option>
                                                 {% endfor %}
                                             </select>
                                             <label class="form-label" for="position">Select Position</label>
                                         </div>
-
-
-
-
 
 
                                         <div class="form-outline col-md-6 mb-4">
@@ -153,8 +153,10 @@
                                         <div class="row">
                                         <div class="form-outline col-md-12 mb-4">
                                             <select class="js-select2 form-control form-control-lg" name="skills" multiple required>
+                                                {% comment %} <option selected  values="{{user.profile.skills.id}}">{{user.profile.skills}}</option> {% endcomment %}
+                                        
                                                 {% for i in skill %}
-                                                <option name="{{i.id}}" value="{{i.id}}">{{i.data}}</option>
+                                                <option name="{{i.data}}" value="{{i.data}}">{{i.data}}</option>
                                                 {% endfor %}
                                             </select>
                                             <br>

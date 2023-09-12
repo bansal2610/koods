@@ -2,37 +2,4 @@
 
 {% block content %}
 
-{% for msg in messages %}
-<script>
-  alert("{{ msg|escapejs }}");
-</script>
-{% endfor %}
-
-<section class="  bg-2">
-  <div class="container">
-    <div class="row">
-      <div class="col-md-12 my-5">
-    {% comment %} <form method="post" action="{% url 'work_prosition' %}">
-      {% csrf_token %}
-      <div class="form-outline mb-4">
-        <input type="text" name="industry" id="industry" class="form-control form-control-lg" required />
-        <label class="form-label" for="otp">Work At</label>
-
-      <div class="form-outline mb-4">
-        <select name="position" class="form-select" aria-label="Default select example" required>
-          <option selected>Select Position</option>
-          {% for i in inds %}
-            <option value="{{i.id}}">{{i.name}}</option>
-          {% endfor %}
-        </select>
-      </div>
-
-
-      <button type="submit" class="btn btn-success btn-block">Submit</button>
-    </form> {% endcomment %}
-  </div>
-</div>
-</div>
-</section>
-
 {% endblock %}

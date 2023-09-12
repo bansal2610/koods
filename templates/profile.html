@@ -254,7 +254,7 @@
         
                 <div class="form-outline mb-4">
                 <select id="someSelectElement" name="position" class="form-select" aria-label="Default select example" required>
-                    <option selected>Select Position</option>
+                    <option value="">Select Position</option>
                     {% for i in inds %}
                     <option value="{{i.id}}" required>{{i.name}}</option>
                     {% endfor %}

@@ -526,5 +526,97 @@
       
     <!-- slider for blog End -->
 
+
+<!-- First Modal -->
+<div class="modal fade" id="modal1" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Modal 1</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="myForm" method="POST" action="{% url 'home' %}">
+                  {% csrf_token %}
+                                      <div class="form-outline col-md-12 mb-4">
+                                        <input type="text" name="first_name"
+                                            id="first_name" class="form-control form-control-lg" />
+                                        <label class="form-label" for="first_name">First Name</label>
+                                    </div>
+  
+                                    <div class="form-outline col-md-12 mb-4">
+                                        <input type="text" name="last_name" id="last_name"
+                                            class="form-control form-control-lg" />
+                                        <label class="form-label" for="last_name">Last Name</label>
+                                    </div>
+                                    {% comment %} <button type="submit" class="btn btn-primary" data-bs-dismiss="modal" data-bs-toggle="modal" data-bs-target="#modal2" id="modal1SubmitButton">Next</button> {% endcomment %}
+                                    
+                                </div>
+                                <div class="modal-footer">
+                                  <button type="button" class="btn btn-primary" data-bs-dismiss="modal" data-bs-toggle="modal" data-bs-target="#modal2">Next</button>
+                                </div>
+                            </div>
+                        </div>
+                      </div>
+  
+                      <!-- Second Modal -->
+                      <div class="modal fade" id="modal2" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalLabel">Modal 2</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                  <h3>if resume not present go to next</h3>
+                                  <div class="form-outline col-md-12 mb-4">
+                                    <input type="text" name="name" id="name"
+                                        class="form-control form-control-lg" />
+                                    <label class="form-label" for="name">Name</label>
+                                </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal" data-bs-toggle="modal" data-bs-target="#modal3">Next</button>
+                                </div>
+                            </div>
+                        </div>
+                      </div>
+  
+                      <!-- Third Modal -->
+                      <div class="modal fade" id="modal3" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalLabel">Modal 3</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    This is the third modal.
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="submit" class="btn btn-primary" data-bs-dismiss="modal" id="modal1SubmitButton">Close</button>
+                </form>
+            </div>
+        </div>
+    </div>
+  </div>
+  </section>
+  
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  
+  <script>
+    // Show the first modal when the page loads
+    $(document).ready(function () {
+      $('#modal1').modal('show');
+    });
+  
+    $('#modal1SubmitButton').click(function () {
+      // Submit the form
+      $('#myForm').submit();
+    });
+  
+  </script>
+
     
 {% endblock %}

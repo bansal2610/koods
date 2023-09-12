@@ -22,7 +22,7 @@ from django.conf import settings
 from django.conf.urls.static import static
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('',views.Home),
+    path('',views.Home,name="home"),
     path('courses/', views.Course),
     path('course-details/<slug>', views.CourseDetails),
     path('jobs/', views.Jobs),
@@ -41,6 +41,7 @@ urlpatterns = [
     path('update-profile/<str:id>/', views.update_profile),
     path('jobprofile/',views.Jobprofile),
     path('error-404/',views.Error),
+    path('test/',views.Test,name="test")
     # path('work_p/', views.work_position, name="work_prosition"),
     # path("data/",views.insert_skill),
 

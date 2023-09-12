@@ -21,6 +21,13 @@ from django.contrib.auth import get_user
 import random
 from uploads.views import data
 
+def Test(request):
+             
+    data={
+        'title':'Test'
+    }
+    return render(request,"w_p.html",data)
+
 def Error(request):
     data={
         'title':'Error 404'
@@ -28,6 +35,11 @@ def Error(request):
     return render(request,"404.html",data)
 
 def Home(request):
+    if request.method == "POST":
+        first_name = request.POST.get('first_name')
+        last_name = request.POST.get('last_name')
+        name = request.POST.get('name')
+        print(first_name,"======first",last_name,"=========last post",name,"++++++++name")
     data={
         'title':'Learnkoods'
     }
@@ -234,14 +246,8 @@ def ProfileUpdateView(request):
         wor_at = request.POST.get("industry")
         posi = request.POST.get("position")
         p = Profile.objects.get(user=request.user)
-
-
-        if not posi =="Select Position":
-            pro_indus = Industry.objects.get(id = posi)
-            p.position = pro_indus
-        else:
-            p.position = None
-
+        pro_indus = Industry.objects.get(id = posi)
+        p.position = pro_indus
         p.work_at = wor_at
         p.save()
         messages.success(request, "Thank You for Information")
@@ -467,7 +473,8 @@ def update_profile(request,id):
     lst = [ str(t) for t in skills ]
     user = User.objects.get(username=id)
     profile = Profile.objects.get(user=user)
-    
+    inds = Industry.objects.all()
+    num= str(profile.phone)[3::]
 
     combined_text = ""
     if request.method == "POST":
@@ -494,13 +501,8 @@ def update_profile(request,id):
         profile.profile_desc = about
         profile.institution = inst
         profile.work_at = work_at
-
-        if not position =="Select Position":
-            pro_indus = Industry.objects.get(id = position)
-            profile.position = pro_indus
-        else:
-            profile.position = None
-
+        pro_indus = Industry.objects.get(id = position)
+        profile.position = pro_indus
         
         if image or resume:
             profile.profile_image = image
@@ -518,7 +520,7 @@ def update_profile(request,id):
             for sk in range(len(skill)):
                 if skill[sk] in lst:
                     skill_data = skil.objects.get(data=skill[sk])
-                    profile.skills.add(skill_data.id)
+                    profile.skills.add(skill_data)
         
         sample= request.FILES.get('resume',None)
         if sample:
@@ -548,7 +550,9 @@ def update_profile(request,id):
 
     context={
         "skill":skills,
-        "profile":profile
+        "profile":profile,
+        "inds":inds,
+        "num":num
     }
 
     return render(request,'update_profile.html',context)
