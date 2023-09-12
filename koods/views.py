@@ -142,18 +142,24 @@ def Add_course(request):
     }
     return render(request,"add_course.html",data)
 
+
+from django.http import JsonResponse
 def signUp(request):
     form = CreateUserForm()
     if request.method == "POST":
-        form = CreateUserForm(request.POST, request.FILES)
+        form = CreateUserForm(request.POST)
         
         if form.is_valid():  
-            form.save()        
+            username = form.cleaned_data['username']
+            
+            # Check if the username already exists
+            if User.objects.filter(username=username).exists():
+                form.add_error(None, 'Username already exists.')
+            else:
+                # Save the user data to the database
+                form.save()        
             messages.success(request,"Registered Successfully")
             return redirect("/sign-in")
-        else:
-            print("error")
-            messages.error(request,"User Already Exists")
        
             
     data={
@@ -227,10 +233,16 @@ def ProfileUpdateView(request):
     if request.method == "POST":
         wor_at = request.POST.get("industry")
         posi = request.POST.get("position")
-        indus_id = Industry.objects.get(id=posi)
         p = Profile.objects.get(user=request.user)
+
+
+        if not posi =="Select Position":
+            pro_indus = Industry.objects.get(id = posi)
+            p.position = pro_indus
+        else:
+            p.position = None
+
         p.work_at = wor_at
-        p.position = indus_id
         p.save()
         messages.success(request, "Thank You for Information")
         return redirect("/user-profile")
@@ -347,108 +359,23 @@ def change_pass(request):
     return render(request, 'change_pass.html')
 
 # def insert_skill(request):
-#     skil.objects.all().delete()
+#     # Industry.objects.all().delete()
 #     d = data()
 #     for i in range(len(d)):
 #         Industry.objects.create(name = d[i])
-#         skil.objects.create(data = d[i])
+#         # skil.objects.create(data = d[i])
 #     return HttpResponse("skill Created")
 
-def update_profile(request,id):
-    skills = skil.objects.all()
-    inds= Industry.objects.all()
-    print(id,"===================id")
-    profile = Profile.objects.get(profile_id=id)
-    print(profile,"================profile")
-    num= str(profile.phone)[3::]
-    user = User.objects.get(id=id)
-    combined_text = ""
-    if request.method == "POST":
-        username = request.POST.get("username")
-        first_name = request.POST.get('first_name')
-        last_name = request.POST.get("last_name")
-        email = request.POST.get("email")
-        about = request.POST.get("about")
-        work_at = request.POST.get("work_at")
-        position = request.POST.get("position")
-        gender = request.POST.get("gender")
-        phone = request.POST.get("phone")
-        inst = request.POST.get("inst")
-        skill = request.POST.getlist("skills")
-        resume = request.FILES.get("resume", None)
-        image = request.FILES.get("image", None)
-        user.username = username
-        user.first_name = first_name
-        user.last_name = last_name
-        user.email = email
-        profile.gender = gender
-        profile.phone = phone
-        profile.work_at = work_at
-        profile.position = position
-        profile.profile_desc = about
-
-        profile.institution = inst
-        if image or resume:
-            profile.profile_image = image
-            profile.resume = resume
-        # try:
-        #     p = Profile.objects.get(id = id)
-        #     print(p.user)
-        # except:
-        #     raise ValueError
-        if skill:
-            profile.skills.clear()
-            for i in range(len(skill)):
-                profile.skills.add(int(skill[i]))
-        
-        sample= request.FILES.get('resume',None)
-        if sample:
-            reader = PdfReader(sample)
-            num_pages = len(reader.pages)
-            for i in range(num_pages):
-                page = reader.pages[i]  
-                text = page.extract_text()
-                combined_text += text
-        else:
-            if request.user:
-                userr = request.user
-                if userr:
-                    p = Profile.objects.get(user=userr)
-                    data = p.resume_data         
-                    combined_text += data
-                else:
-                    combined_text = "Unable to add"
-                    messages.error(request,"User Not Found")
-        
-        profile.resume_data = combined_text
-        profile.save()
-        user.save()
-        print("success")
-        return redirect("/user-profile/")
-    
-
-    context={
-        "skill":skills,
-        "profile":profile,
-        "num":num,
-        "inds":inds,
-        "title":'Update Profile'
-    }
-
-    return render(request,'update_profile.html',context)
-
-
-
-
 # def update_profile(request,id):
-#     lst = []
 #     skills = skil.objects.all()
-#     for i in skills:
-#         lst.append(i)
-#     print(lst, "========lst")
-#     profile = Profile.objects.get(profile_id=id)
-#     user = User.objects.get(id=id)
+#     inds= Industry.objects.all()
+#     print(id,"===================id")
+#     user = User.objects.get(username=id)
 
+#     profile = Profile.objects.get(user=user)
+#     print(profile,"================profile")
+#     num= str(profile.phone)[3::]
+    
 #     combined_text = ""
 #     if request.method == "POST":
 #         username = request.POST.get("username")
@@ -456,6 +383,8 @@ def update_profile(request,id):
 #         last_name = request.POST.get("last_name")
 #         email = request.POST.get("email")
 #         about = request.POST.get("about")
+#         work_at = request.POST.get("work_at")
+#         position = request.POST.get("position")
 #         gender = request.POST.get("gender")
 #         phone = request.POST.get("phone")
 #         inst = request.POST.get("inst")
@@ -469,7 +398,15 @@ def update_profile(request,id):
 #         user.email = email
 #         profile.gender = gender
 #         profile.phone = phone
+#         profile.work_at = work_at
 #         profile.profile_desc = about
+#         print("====================",position, "========================Position")
+#         if not position =="Select Position":
+#             pro_indus = Industry.objects.get(id = position)
+#             profile.position = pro_indus
+#         else:
+#             profile.position = None
+        
 #         profile.institution = inst
 #         if image or resume:
 #             profile.profile_image = image
@@ -480,32 +417,9 @@ def update_profile(request,id):
 #         # except:
 #         #     raise ValueError
 #         if skill:
-#             print(skill[0], "==========Skill index")
-#             lst = []
-#             print(len(skill),"==========skill Length")
+#             profile.skills.clear()
 #             for i in range(len(skill)):
-#                 if skill not in lst:
-#                     ks = skil.objects.create(data=skill[i])
-#                     print(ks, "==============KS")
-#                     print(ks.id, "==============KS ID")
-#                     profile.skills.add(int(ks.id))
-#                     print("Hello")
-#                     # for j in range(len(skill)):
-#                     #     profile.skills.clear()
-#                     #     profile.skills.add(int(skill[j]))
-#             print(type(skill),"=============TYPE")
-#             if type(skill) == list:
-#                 for i in range(len(skill)):
-#                     if skill in lst:
-#                         profile.skills.add(data=(skill[i]))
-#                         print("world")
-#                     #     sk = skil.objects.get(data=str(i))
-#                     # print(sk.id, "==============SK ID")
-#                     # profile.skills.add(int(sk.id))
-
-#             # profile.skills.clear()
-#             # for i in range(len(skill)):
-#             #     profile.skills.add(int(skill[i]))
+#                 profile.skills.add(int(skill[i]))
         
 #         sample= request.FILES.get('resume',None)
 #         if sample:
@@ -517,9 +431,9 @@ def update_profile(request,id):
 #                 combined_text += text
 #         else:
 #             if request.user:
-#                 user = request.user
-#                 if user:
-#                     p = Profile.objects.get(user=user)
+#                 userr = request.user
+#                 if userr:
+#                     p = Profile.objects.get(user=userr)
 #                     data = p.resume_data         
 #                     combined_text += data
 #                 else:
@@ -535,7 +449,106 @@ def update_profile(request,id):
 
 #     context={
 #         "skill":skills,
-#         "profile":profile
+#         "profile":profile,
+#         "num":num,
+#         "inds":inds,
+#         "title":'Update Profile'
 #     }
 
 #     return render(request,'update_profile.html',context)
+
+
+
+# new
+
+def update_profile(request,id):
+    lst = []
+    skills = list(skil.objects.all())
+    lst = [ str(t) for t in skills ]
+    user = User.objects.get(username=id)
+    profile = Profile.objects.get(user=user)
+    
+
+    combined_text = ""
+    if request.method == "POST":
+        username = request.POST.get("username")
+        first_name = request.POST.get('first_name')
+        last_name = request.POST.get("last_name")
+        email = request.POST.get("email")
+        about = request.POST.get("about")
+        gender = request.POST.get("gender")
+        phone = request.POST.get("phone")
+        inst = request.POST.get("inst")
+        skill = request.POST.getlist("skills")
+        resume = request.FILES.get("resume", None)
+        image = request.FILES.get("image", None)
+        work_at = request.POST.get("work_at")
+        position = request.POST.get("position")
+        
+        user.username = username
+        user.first_name = first_name
+        user.last_name = last_name
+        user.email = email
+        profile.gender = gender
+        profile.phone = phone
+        profile.profile_desc = about
+        profile.institution = inst
+        profile.work_at = work_at
+
+        if not position =="Select Position":
+            pro_indus = Industry.objects.get(id = position)
+            profile.position = pro_indus
+        else:
+            profile.position = None
+
+        
+        if image or resume:
+            profile.profile_image = image
+            profile.resume = resume
+
+        if skill:
+            lst2 = []
+            for m in range(len(skill)):
+                lst2.append(skill[m])
+            for k in range(len(lst2)):
+                if lst2[k] not in lst:
+                    skil.objects.create(data=lst2[k])
+                    lst.append(lst2[k])
+            profile.skills.clear()
+            for sk in range(len(skill)):
+                if skill[sk] in lst:
+                    skill_data = skil.objects.get(data=skill[sk])
+                    profile.skills.add(skill_data.id)
+        
+        sample= request.FILES.get('resume',None)
+        if sample:
+            reader = PdfReader(sample)
+            num_pages = len(reader.pages)
+            for i in range(num_pages):
+                page = reader.pages[i]  
+                text = page.extract_text()
+                combined_text += text
+        else:
+            if request.user:
+                user = request.user
+                if user:
+                    p = Profile.objects.get(user=user)
+                    data = p.resume_data         
+                    combined_text += data
+                else:
+                    combined_text = "Unable to add"
+                    messages.error(request,"User Not Found")
+        
+        profile.resume_data = combined_text
+        profile.save()
+        user.save()
+        print("success")
+        return redirect("/user-profile/")
+    
+
+    context={
+        "skill":skills,
+        "profile":profile
+    }
+
+    return render(request,'update_profile.html',context)

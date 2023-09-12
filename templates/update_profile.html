@@ -111,8 +111,8 @@
                                         <div class="row">
                                             <div class="form-outline col-md-6 mb-4">
                                                 <input type="text" name="work_at" id="work_at"
-                                                    class="form-control form-control-lg" />
-                                                <label class="form-label" for="email">Work At</label>
+                                                    class="form-control form-control-lg" value="{{profile.work_at}}" />
+                                                <label class="form-label" for="work_at">Work At</label>
                                             </div>
                                         </div>
 
@@ -136,7 +136,7 @@
                                                 <option value="{{i.id}}">{{i.name}}</option>
                                                 {% endfor %}
                                             </select>
-                                            <label class="form-label" for="email">Select Position</label>
+                                            <label class="form-label" for="position">Select Position</label>
                                         </div>
 
 
@@ -182,9 +182,9 @@
                                         </div>
 
                                         <div class="form-outline col-md-6 mb-4">
-                                            <input type="text" name="inst" id="email" value="{{profile.institution}}"
+                                            <input type="text" name="inst" id="inst" value="{{profile.institution}}"
                                                 class="form-control form-control-lg" />
-                                            <label class="form-label" for="email">Institute/Organisation</label>
+                                            <label class="form-label" for="inst">Institute/Organisation</label>
                                         </div>
                                         </div>
                                         <button type="submit" class="btn btn-success btn-block">Update</button>

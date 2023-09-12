@@ -33,7 +33,7 @@
                    <a href="" class="lsidebar">Settings</a>
                 </li>
                 <li class="nav-item">
-                   <a href="/update_profile/{{user.id}}/" class="lsidebar">Edit Profile <i class="bi bi-pencil-square"></i></button></a>
+                   <a href="/update_profile/{{user.username}}/" class="lsidebar">Edit Profile <i class="bi bi-pencil-square"></i></button></a>
                 </li>
               </ul>
             
@@ -159,6 +159,38 @@
                                     </div>
                                     <div class="col-md-12 p-3">
                                         <p class="text-muted mb-0">{{user.profile.profile_desc}}</p>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="card mb-4">
+                            <div class="card-body">
+
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <p class="mb-0">Work At</p>
+                                    </div>
+                                    <div class="col-md-12 p-3">
+                                        <p class="text-muted mb-0">{{user.profile.work_at}}</p>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="card mb-4">
+                            <div class="card-body">
+
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <p class="mb-0">Position</p>
+                                    </div>
+                                    <div class="col-md-12 p-3">
+                                        <p class="text-muted mb-0">{{user.profile.position}}</p>
                                     </div>
                                 </div>
 

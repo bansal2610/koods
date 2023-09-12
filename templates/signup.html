@@ -46,29 +46,29 @@
           <h5 class="fw-normal mb-3 pb-3" style="letter-spacing: 1px;">Register your account</h5>
 
 
-          {% for msg in messages %}
-          <div class="alert alert-danger" role="alert">
-            {{msg}}
+          {% if form.errors %}
+          <div class="alert alert-danger">
+              {{ form.errors }}
           </div>
-          {% endfor %}
+          {% endif %}
 
 
           <div class="row">
             <div class="form-outline col-lg-6 mb-4">
-              <input type="text" name="first_name" id="first_name" class="form-control form-control-lg" />
+              <input type="text" name="first_name" id="first_name" class="form-control form-control-lg" required />
               <label class="form-label" for="first_name">First Name</label>
             </div>
             <div class="form-outline col-lg-6 mb-4">
-              <input type="text" name="last_name" id="last_name" class="form-control form-control-lg" />
+              <input type="text" name="last_name" id="last_name" class="form-control form-control-lg" required />
               <label class="form-label" for="last_name">Last Name</label>
             </div>
           </div>
 
           <div class="row">
             <div class="form-outline col-lg-6 mb-4">
-              <input type="text" name="username" id="username" class="form-control form-control-lg" />
+              <input type="text" name="username" id="username" class="form-control form-control-lg" required />
               <label class="form-label" for="username">User Name</label>
-
+              
             </div>
             <div class="form-outline col-lg-6 mb-4">
 
@@ -81,7 +81,7 @@
           <div class="row">
             <div class="form-outline col-lg-6 mb-4">
               <input type="password" name="password1" id="password1" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"
-                class="form-control form-control-lg" />
+                class="form-control form-control-lg" required />
               <label class="form-label" for="password1">Password</label>
               <div class="edit"><input type="checkbox" class="form-label" onclick="myFunction1()"><span>Show
                   Password</span></div>
@@ -89,12 +89,13 @@
 
             <div class="form-outline col-lg-6 mb-4">
               <input type="password" name="password2" id="password2" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"
-                class="form-control form-control-lg" />
+                class="form-control form-control-lg" required />
               <label class="form-label" for="password2">Confirm Password</label>
 
             </div>
+
             <div id="errormessage">
-              <h3>Password must contain the following:</h3>
+              <p>Password must contain the following:</p>
               <p id="letter" class="invalid">A <b>lowercase</b> letter</p>
               <p id="capital" class="invalid">A <b>capital (uppercase)</b> letter</p>
               <p id="number" class="invalid">A <b>number</b></p>
@@ -107,7 +108,7 @@
           </div>
 
         </form>
-
+        
         <hr class="my-4">
         <div class="row mb-4">
           <div class="col-md-6">

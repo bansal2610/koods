@@ -27,6 +27,22 @@ class Job(models.Model):
     skills_req =  models.ManyToManyField(skil)
     job_des = HTMLField(blank=True, null=True)
     salary = models.CharField(max_length=20)
+    min_salary = models.DecimalField(
+        max_digits=10,
+        decimal_places=2,
+        null=True,
+        blank=True,
+        verbose_name="Minimum Salary",
+        help_text="Enter the minimum salary for this job (e.g., 50000.00)",
+    )
+    max_salary = models.DecimalField(
+        max_digits=10,
+        decimal_places=2,
+        null=True,
+        blank=True,
+        verbose_name="Maximum Salary",
+        help_text="Enter the maximum salary for this job (e.g., 80000.00)",
+    )
     company = models.CharField(max_length=100,null=False,default=None)
     location = models.CharField(max_length=250)
     company_desc = HTMLField(blank=True, null=True)

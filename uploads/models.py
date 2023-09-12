@@ -28,12 +28,12 @@ class Profile(models.Model):
     phone = PhoneNumberField(region="IN",null=True, blank=True,unique=True)
     gender = models.CharField(max_length=100)
     work_at = models.CharField(max_length=100, default=None, null=True, blank=True)
-    position = models.ForeignKey(Industry, on_delete=models.CASCADE, null=True, blank=True, default=None)
+    position = models.ForeignKey(Industry, on_delete=models.SET_NULL, null=True, blank=True, default=None)
     is_job = models.BooleanField(default=False)
     is_course = models.BooleanField(default=False)
 
     def __str__(self):
-        return '%s %s' % (self.user.username, self.user.last_name)
+        return self.user.username
 
 
 @receiver(post_save, sender=User)

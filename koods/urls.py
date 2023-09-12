@@ -38,11 +38,12 @@ urlpatterns = [
     path('forget/',views.password_reset_request,name="forget"),
     path('change_password/',views.change_pass,name="change_pass"),
     path('verify-otp/',views.verify_otp,name="verify_otp"),
-    path('update_profile/<int:id>/', views.update_profile),
+    path('update_profile/<str:id>/', views.update_profile),
     path('jobprofile/',views.Jobprofile),
-    path('error-404/',views.Error)
+    path('error-404/',views.Error),
     # path('work_p/', views.work_position, name="work_prosition"),
     # path("data/",views.insert_skill),
+
 ]
 urlpatterns += staticfiles_urlpatterns()
 if settings.DEBUG:

@@ -8,7 +8,7 @@ from courses.models import Courses
 class ADDJOB(forms.ModelForm):
     class Meta:
         model = Job
-        fields = ['category','job_title','job_type','exp_required','skills_req','job_des','salary','location','company','company_desc','url','last_update','job_image','is_published','is_closed']
+        fields = ['category','job_title','job_type','exp_required','skills_req','job_des','salary','min_salary','max_salary','location','company','company_desc','url','last_update','job_image','is_published','is_closed']
     def __init__(self, *args, **kwargs):
         user = kwargs.pop('user', None)
         super(ADDJOB, self).__init__(*args, **kwargs)
