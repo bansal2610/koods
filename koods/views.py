@@ -26,7 +26,7 @@ def Test(request):
     data={
         'title':'Test'
     }
-    return render(request,"w_p.html",data)
+    return render(request,"test.html",data)
 
 def Error(request):
     data={
@@ -35,11 +35,6 @@ def Error(request):
     return render(request,"404.html",data)
 
 def Home(request):
-    if request.method == "POST":
-        first_name = request.POST.get('first_name')
-        last_name = request.POST.get('last_name')
-        name = request.POST.get('name')
-        print(first_name,"======first",last_name,"=========last post",name,"++++++++name")
     data={
         'title':'Learnkoods'
     }
@@ -155,7 +150,6 @@ def Add_course(request):
     return render(request,"add_course.html",data)
 
 
-from django.http import JsonResponse
 def signUp(request):
     form = CreateUserForm()
     if request.method == "POST":
@@ -238,18 +232,19 @@ def ProfileUpdateView(request):
     usr = request.user
     pro = Profile.objects.get(user=usr)
     pro_skill = pro.skills.all()
-
-
-
     inds = Industry.objects.all()
     if request.method == "POST":
         wor_at = request.POST.get("industry")
         posi = request.POST.get("position")
+        name = request.POST.get("name")
+        name2 = request.POST.get("name2")
         p = Profile.objects.get(user=request.user)
         pro_indus = Industry.objects.get(id = posi)
         p.position = pro_indus
         p.work_at = wor_at
-        p.save()
+        # p.save()
+        print(wor_at,posi,name,name2,"====================")
+
         messages.success(request, "Thank You for Information")
         return redirect("/user-profile")
 

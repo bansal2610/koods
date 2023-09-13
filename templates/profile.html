@@ -236,7 +236,7 @@
 
 <!-- Modal -->
 
-{% if pro == None %}
+{% comment %} {% if pro == None %}
     <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog">
         <div class="modal-content">
@@ -269,17 +269,112 @@
         </div>
         </div>
     </div>
-{% endif %}
+{% endif %} {% endcomment %}
 
 
-</section>
 
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script>
-    $(document).ready(function() {
-        $('#exampleModal').modal('show');
+
+{% if pro == None %}
+
+<!-- First Modal -->
+<div class="modal fade" id="modal1" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Modal 1</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="myForm" method="POST" action="{% url 'profile' %}">
+                    {% csrf_token %}
+                    <div class="form-outline mb-4">
+                        <input type="text" name="industry" id="industry" class="form-control form-control-lg" required />
+                        <label class="form-label" for="industry">Work At</label>
+                    </div>
+                    <div class="form-outline mb-4">
+                        <select id="someSelectElement" name="position" class="form-select" aria-label="Default select example" required>
+                            <option value="">Select Position</option>
+                            {% for i in inds %}
+                            <option value="{{i.id}}">{{i.name}}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                        
+                
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-bs-dismiss="modal" data-bs-toggle="modal" data-bs-target="#modal2">Next</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Second Modal -->
+
+<div class="modal fade" id="modal2" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Modal 2</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="form-outline mb-4">
+                    <input type="text" name="name" id="name" class="form-control form-control-lg" required />
+                    <label class="form-label" for="name">name</label>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-bs-dismiss="modal" data-bs-toggle="modal" data-bs-target="#modal3">Next</button>
+            </div>
+       
+        </div>
+    </div>
+</div>
+
+<!-- Third Modal -->
+
+<div class="modal fade" id="modal3" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Modal 3</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="form-outline mb-4">
+                    <input type="text" name="name2" id="name2" class="form-control form-control-lg" required />
+                    <label class="form-label" for="name2">name2</label>
+                </div>
+                    {% comment %} <button type="submit" class="btn btn-primary" data-bs-dismiss="modal" data-bs-toggle="modal" data-bs-target="#modal2" id="modal1SubmitButton">Next</button> {% endcomment %}
+            </div>
+            <div class="modal-footer">
+                <button type="submit" class="btn btn-primary" data-bs-dismiss="modal" id="modal1SubmitButton">submit</button>
+            </div>
+        </form>
+        </div>
+    </div>
+</div>
+
+  {% endif %}
+  
+  </section>
+  
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  
+  <script>
+    // Show the first modal when the page loads
+    $(document).ready(function () {
+      $('#modal1').modal('show');
     });
-</script>
+  
+    $('#modal1SubmitButton').click(function () {
+      // Submit the form
+      $('#myForm').submit();
+    });
+  
+  </script>
 
 {% endif %}
 
