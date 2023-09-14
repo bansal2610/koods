@@ -4,6 +4,7 @@ $(".js-select2").select2({
     allowHtml: true,
     allowClear: true,
     tags: true // создает новые опции на лету
+   
 });
 
     $('.icons_select2').select2({

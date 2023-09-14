@@ -230,20 +230,54 @@ def ProfileUpdateView(request):
     if not request.user.is_authenticated:
         return redirect("/error-404/")
     usr = request.user
-    pro = Profile.objects.get(user=usr)
-    pro_skill = pro.skills.all()
+    p = Profile.objects.get(user=usr)
+    pro_skill = p.skills.all()
     inds = Industry.objects.all()
+    sk = skil.objects.all()
     if request.method == "POST":
         wor_at = request.POST.get("industry")
         posi = request.POST.get("position")
-        name = request.POST.get("name")
-        name2 = request.POST.get("name2")
-        p = Profile.objects.get(user=request.user)
+        res = request.FILES.get("resume", None)
+        skill = request.POST.getlist("skills")
         pro_indus = Industry.objects.get(id = posi)
         p.position = pro_indus
-        p.work_at = wor_at
-        # p.save()
-        print(wor_at,posi,name,name2,"====================")
+        p.work_at = wor_at 
+
+        if res == None:
+            res = p.resume
+        else:
+            p.resume = res
+            
+        p.skills.clear()
+        for skk in range(len(skill)):
+            skill_data = skil.objects.get(data=skill[skk])
+            print(skill_data,"==============Skill Data")
+            p.skills.add(skill_data)
+
+        combined_text = ""
+        if res:
+            reader = PdfReader(res)
+            num_pages = len(reader.pages)
+            for i in range(num_pages):
+                page = reader.pages[i]  
+                text = page.extract_text()
+                combined_text += text
+        else:
+            if request.user:
+                user = request.user
+                if user:
+                    p = Profile.objects.get(user=user)
+                    data = p.resume_data         
+                    combined_text += data
+                else:
+                    combined_text = "Unable to add"
+                    messages.error(request,"User Not Found")
+        
+        p.resume_data = combined_text
+
+        p.save()
+        print(wor_at,posi,res,skill,"====================")
+        print(type(skill),"====================type")
 
         messages.success(request, "Thank You for Information")
         return redirect("/user-profile")
@@ -252,7 +286,9 @@ def ProfileUpdateView(request):
         'title':'Learnkoods',
         'skill' :pro_skill,
         "inds":inds,
-        "pro":pro.work_at
+        "prof":p.work_at,
+        "pro":p,
+        "sk":sk
     }
     return render(request,"profile.html",data)
 
