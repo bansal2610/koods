@@ -47,7 +47,6 @@ class Job(models.Model):
     location = models.CharField(max_length=250)
     company_desc = HTMLField(blank=True, null=True)
     url = models.URLField(max_length=200)
-    last_update = models.DateField()
     timestamp = models.DateTimeField(auto_now=True)
     job_image = models.ImageField(upload_to='job/', default = "job/jobs-1.jpg")
     job_slug = AutoSlugField(populate_from = 'get_full_slug',unique=True,null=True,default=None)

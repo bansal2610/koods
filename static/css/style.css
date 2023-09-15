@@ -1068,3 +1068,7 @@ a:hover {
 .skills-label{
 display: block;
 }
+
+.modal-footer {
+    display: block;
+}

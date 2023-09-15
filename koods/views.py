@@ -3,7 +3,7 @@ from django.shortcuts import get_object_or_404, redirect, render
 from django.contrib.auth import authenticate,login,logout
 from courses.models import Courses
 from jobs.models import Job
-from koods.forms import ADDCOURSE, CreateUserForm, ADDJOB
+from koods.forms import ADDCOURSE, EDITJOB, CreateUserForm, ADDJOB
 # from koods.forms import ProfileForm, UserForm
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import TemplateView
@@ -86,23 +86,80 @@ def jobDetails(request,slug):
 def Add_jobs(request):
     if request.user.is_authenticated:
         if not request.user.profile.is_job == True:
-            return redirect("/")
-        form = ADDJOB()
-        if request.method == "POST":
-            form = ADDJOB(request.POST, user=request.user)
-            if form.is_valid():
-                instance = form.save(commit=False)
-                instance.user = request.user
-                instance.save()
-                return redirect('/jobs/')
-            else:
-                print("Form Error: ",form.errors)
+            return redirect("/")    
+    usr = request.user
+    if request.method == "POST":
+        job_title = request.POST.get("job_title")
+        company = request.POST.get('company')
+        
+        jb = Job.objects.create(user=usr,job_title=job_title,company=company)
+        print(jb,"+++++++++++jb")
+        print(usr,job_title,company,"+==================title company")
+        jb.save()
     else:
-        return redirect("/")
+        print("error","+++++++++++")
     data={
-        'form':form
+       'title':'Learnkoods'
     }
+    # if request.user.is_authenticated:
+    #     if not request.user.profile.is_job == True:
+    #         return redirect("/")
+    #     form = ADDJOB()
+    #     if request.method == "POST":
+    #         form = ADDJOB(request.POST, user=request.user)
+    #         if form.is_valid():
+    #             instance = form.save(commit=False)
+    #             instance.user = request.user
+    #             instance.save()
+    #             return redirect('/jobs/')
+    #         else:
+    #             print("Form Error: ",form.errors)
+    # else:
+    #     return redirect("/")
+    # data={
+    #     'form':form
+    # }
     return render(request,"add_jobs.html",data)
+
+def editjob(request,id):    
+    if request.user.is_authenticated:
+        if not request.user.profile.is_job == True:
+            return redirect("/")    
+    usr = Job.objects.get(job_id=id)
+    if request.method == "POST":
+        job_title = request.POST.get("job_title")
+        company = request.POST.get('company')
+        usr.job_title=job_title
+        usr.company=company
+        print(usr,job_title,company,"+==================title company")
+        usr.save()
+    else:
+        print("error","+++++++++++")
+    data={
+       'title':'Learnkoods',
+       'usr':usr
+    }
+    # if request.user.is_authenticated:
+    #     if not request.user.profile.is_job == True:
+    #         return redirect("/")
+    #     job = Job.objects.get(job_id=id)
+    #     form = EDITJOB()
+    #     if request.method == "POST":
+    #         form = EDITJOB(request.POST, instance=job)
+    #         if form.is_valid():    
+    #             form.save()
+    #             return redirect('/jobs/')
+    #         else:
+    #             form = EDITJOB(instance = job)
+    #             print("Form Error: ",form.errors)
+    # else:
+    #     return redirect("/")
+    # data={
+    #     'title':'Learnkoods',
+    #     'form':form,
+    #     "job":job
+    # }
+    return render(request,"edit_job.html",data)
 
 def Course(request):
     if request.user.is_authenticated:

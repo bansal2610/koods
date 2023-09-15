@@ -34,6 +34,7 @@ urlpatterns = [
     path('user-profile/', views.ProfileUpdateView,name="profile"),
     # path('user-profile/', views.ProfileUpdateView.as_view(),name="profile"),
     path('add_jobs/',views.Add_jobs,name="addjob"),
+    path('edit-job/<id>',views.editjob,name="editjob"),
     path('add_course/',views.Add_course,name="addcourse"),
     path('forget/',views.password_reset_request,name="forget"),
     path('change_password/',views.change_pass,name="change_pass"),

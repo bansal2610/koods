@@ -16,24 +16,23 @@
 <div class="container my-5">
     <div class="row contents">
         <div class="col-md-6">
-            {% comment %} <form method="POST" action="{% url 'addjob' %}">
+            {% comment %} <form method="POST" action="{% url 'editjob' id=job.job_id  %}">
                 {% csrf_token %}
                 {{form|crispy}}
                 <button type="submit" class="btn btn-success btn-block">Update</button>
             </form> {% endcomment %}
-
             <form method="POST" enctype="multipart/form-data" >
                 {% csrf_token %}
 
                 <div class="row">
 
                 <div class="form-outline col-md-12 mb-4">
-                    <input type="text" name="job_title" id="job_title" class="form-control form-control-lg" />
+                    <input type="text" name="job_title" id="job_title" class="form-control form-control-lg" value="{{usr.job_title}}" />
                     <label class="form-label" for="job_title">Job Title</label>
                 </div>
 
                 <div class="form-outline col-md-12 mb-4">
-                    <input type="text" name="company" id="company" class="form-control form-control-lg" />
+                    <input type="text" name="company" id="company" class="form-control form-control-lg" value="{{usr.company}}" />
                     <label class="form-label" for="company">Company</label>
                 </div>
 

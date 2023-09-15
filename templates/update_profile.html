@@ -98,8 +98,31 @@
                                         <label class="form-label" for="email">About</label>
                                         </div>
                                         </div>
-
-
+                                        <div class="row">
+                                            <div class="form-outline col-md-12 mb-4">
+                                                <select class="js-select2 form-control form-control-lg" name="skills" multiple required>
+                                                    {% comment %} <option selected  values="{{user.profile.skills.id}}">{{user.profile.skills}}</option> {% endcomment %}
+                                            
+                                                    {% for i in skill %}
+                                                    <option name="{{i.data}}" value="{{i.data}}">{{i.data}}</option>
+                                                    {% endfor %}
+                                                </select>
+                                                <br>
+                                                <label class="form-label" for="email">Skills</label>
+                                            </div>
+                                            </div>
+                                        <div class="row">
+                                        <div class="form-outline col-md-6 mb-4">
+                                            <input type="file" name="image" id="image"
+                                                class="form-control form-control-lg" />
+                                            <label class="form-label" for="email">Profile Image</label>
+                                        </div>
+                                        <div class="form-outline col-md-6 mb-4">
+                                            <input type="file" name="resume" id="resume" value="{{profile.resume}}"
+                                                class="form-control form-control-lg" />
+                                            <label class="form-label" for="resume">Resume</label>s
+                                        </div>
+                                        </div>
 
 
                                         <div class="row">
@@ -108,55 +131,22 @@
                                                     class="form-control form-control-lg" value="{{profile.work_at}}" />
                                                 <label class="form-label" for="work_at">Work At</label>
                                             </div>
+                                            <div class="form-outline col-md-6 mb-4">
+                                                <select id="someSelectElement" name="position" class="form-select" aria-label="Default select example" required>
+                                                    {% if user.profile.position %}
+                                                        <option selected value="{{user.profile.position.id}}">{{user.profile.position}}</option>
+                                                    {% else %}
+                                                        <option value="">Select Position</option>
+                                                    {% endif %}
+                                                    {% for i in inds %}
+                                                    <option value="{{i.id}}">{{i.name}}</option>
+                                                    {% endfor %}
+                                                </select>
+                                                <label class="form-label" for="position">Select Position</label>
+                                            </div>
                                         </div>
-
-
-
-
-                                        <div class="row">
-                                        <div class="form-outline col-md-6 mb-4">
-                                            <input type="file" name="image" id="image"
-                                                class="form-control form-control-lg" />
-                                            <label class="form-label" for="email">Profile Image</label>
-                                        </div>
-
 
                                         
-
-                                        <div class="form-outline mb-4">
-                                            <select id="someSelectElement" name="position" class="form-select" aria-label="Default select example" required>
-                                                {% if user.profile.position %}
-                                                    <option selected value="{{user.profile.position.id}}">{{user.profile.position}}</option>
-                                                {% else %}
-                                                    <option value="">Select Position</option>
-                                                {% endif %}
-                                                {% for i in inds %}
-                                                <option value="{{i.id}}">{{i.name}}</option>
-                                                {% endfor %}
-                                            </select>
-                                            <label class="form-label" for="position">Select Position</label>
-                                        </div>
-
-
-                                        <div class="form-outline col-md-6 mb-4">
-                                            <input type="file" name="resume" id="resume" value="{{profile.resume}}"
-                                                class="form-control form-control-lg" />
-                                            <label class="form-label" for="resume">Resume</label>s
-                                        </div>
-                                        </div>
-                                        <div class="row">
-                                        <div class="form-outline col-md-12 mb-4">
-                                            <select class="js-select2 form-control form-control-lg" name="skills" multiple required>
-                                                {% comment %} <option selected  values="{{user.profile.skills.id}}">{{user.profile.skills}}</option> {% endcomment %}
-                                        
-                                                {% for i in skill %}
-                                                <option name="{{i.data}}" value="{{i.data}}">{{i.data}}</option>
-                                                {% endfor %}
-                                            </select>
-                                            <br>
-                                            <label class="form-label" for="email">Skills</label>
-                                        </div>
-                                        </div>
                                         <div class="row">
                                         <div class="form-outline col-md-12 mb-4">
                                             
