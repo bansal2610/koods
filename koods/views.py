@@ -2,8 +2,8 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import get_object_or_404, redirect, render
 from django.contrib.auth import authenticate,login,logout
 from courses.models import Courses
-from jobs.models import Job
-from koods.forms import ADDCOURSE, EDITJOB, CreateUserForm, ADDJOB
+from jobs.models import Category, Job
+from koods.forms import ADDCOURSE, EDIT_DESC, EDITJOB, CreateUserForm
 # from koods.forms import ProfileForm, UserForm
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import TemplateView
@@ -20,6 +20,7 @@ from django.contrib.auth.hashers import make_password
 from django.contrib.auth import get_user
 import random
 from uploads.views import data
+from koods.forms import ADDJOB_DESC
 
 def Test(request):
              
@@ -88,18 +89,51 @@ def Add_jobs(request):
         if not request.user.profile.is_job == True:
             return redirect("/")    
     usr = request.user
+    cat = Category.objects.all()
+    skill = skil.objects.all()
+    formss = ADDJOB_DESC() 
     if request.method == "POST":
-        job_title = request.POST.get("job_title")
-        company = request.POST.get('company')
-        
-        jb = Job.objects.create(user=usr,job_title=job_title,company=company)
-        print(jb,"+++++++++++jb")
-        print(usr,job_title,company,"+==================title company")
-        jb.save()
-    else:
-        print("error","+++++++++++")
+        formss = ADDJOB_DESC(request.POST)
+        if formss.is_valid():
+            job_desc = formss.cleaned_data['job_des']
+            comp_desc = formss.cleaned_data['company_desc']
+            job_title = request.POST.get("job_title")
+            company = request.POST.get('company')
+            job_type = request.POST.get('job_type')
+            category = request.POST.get('category')
+            cat_id = Category.objects.get(id=category)
+            exp_required = request.POST.get('exp_required')
+            skills_required = request.POST.getlist('skills_req')
+            # job_des = request.POST.get('job_des')
+            min_salary = request.POST.get('min_salary')
+            max_salary = request.POST.get('max_salary')
+            location = request.POST.get('location')
+            # company_desc = request.POST.get('company_desc')
+            job_image = request.FILES.get("job_image", None)
+            url = request.POST.get('url')
+            print(skills_required,"======================Skill treq")
+
+            jb = Job.objects.create(user=usr,job_title=job_title,company=company,job_type=job_type,category=cat_id,exp_required=exp_required,min_salary=min_salary,job_des=job_desc,max_salary=max_salary,location=location,company_desc=comp_desc,url=url)
+
+            if job_image :
+                jb.job_image = job_image
+            
+            if skills_required:
+                for skk in range(len(skills_required)):
+                    skill_data = skil.objects.get(data=skills_required[skk])
+                    jb.skills_req.add(skill_data)
+
+            print(jb,"+++++++++++jb")
+            # print(usr,job_title,company,job_type,category,exp_required,skills_req,job_des,min_salary,max_salary,location,company_desc,job_image,url,"+==================title company")
+            # jb.save()
+            return redirect("/jobprofile/")
+        else:
+            formss = ADDJOB_DESC()
     data={
-       'title':'Learnkoods'
+       'title':'Learnkoods',
+       'cat':cat,
+       'skill':skill,
+       "form":formss,
     }
     # if request.user.is_authenticated:
     #     if not request.user.profile.is_job == True:
@@ -125,19 +159,66 @@ def editjob(request,id):
     if request.user.is_authenticated:
         if not request.user.profile.is_job == True:
             return redirect("/")    
-    usr = Job.objects.get(job_id=id)
+    usr = Job.objects.get(job_id=id) 
+    cat = Category.objects.all()   
+    skill = skil.objects.all()
+    form = EDIT_DESC()
+
+    # print(usr.skills_req.all(),"+++++++++++skillreq")
     if request.method == "POST":
+        form = EDIT_DESC(request.POST, instance=usr)
+        if form.is_valid():
+            job_desc = form.cleaned_data['job_des']
+            comp_desc = form.cleaned_data['company_desc']
+        
+        
         job_title = request.POST.get("job_title")
         company = request.POST.get('company')
+        job_type = request.POST.get('job_type')
+        category = request.POST.get('category')
+        cat_id = Category.objects.get(id=category)
+        exp_required = request.POST.get('exp_required')
+        skills_required = request.POST.getlist('skills_req')
+        min_salary = request.POST.get('min_salary')
+        max_salary = request.POST.get('max_salary')
+        location = request.POST.get('location')
+        job_image = request.FILES.get("job_image", None)
+        url = request.POST.get('url')
+
+        if job_image :
+            usr.job_image = job_image
+
+        if skills_required:
+            usr.skills_req.clear()
+
         usr.job_title=job_title
         usr.company=company
-        print(usr,job_title,company,"+==================title company")
+        usr.job_type=job_type
+        usr.category=cat_id
+        usr.exp_required=exp_required
+        usr.job_des=job_desc
+        usr.min_salary=min_salary
+        usr.max_salary=max_salary
+        usr.location=location
+        usr.company_desc=comp_desc
+        usr.url=url
+        
+        for skk in range(len(skills_required)):
+            skill_data = skil.objects.get(data=skills_required[skk])
+            usr.skills_req.add(skill_data)
+
+
+        # print(job_title,company,job_type,category,exp_required,skills_required,job_des,min_salary,max_salary,location,company_desc,job_image,url,"+==================title company")
         usr.save()
+        return redirect("/jobprofile/")
     else:
-        print("error","+++++++++++")
+        form = EDIT_DESC(instance=usr)
     data={
        'title':'Learnkoods',
-       'usr':usr
+       'usr':usr,
+       'cat':cat,
+       'skill':skill,
+       'form':form
     }
     # if request.user.is_authenticated:
     #     if not request.user.profile.is_job == True:
@@ -160,6 +241,11 @@ def editjob(request,id):
     #     "job":job
     # }
     return render(request,"edit_job.html",data)
+
+def delete_job(request, id):
+    delt = Job.objects.get(job_id = id)
+    delt.delete()
+    return redirect('/jobprofile/')
 
 def Course(request):
     if request.user.is_authenticated:
@@ -300,9 +386,7 @@ def ProfileUpdateView(request):
         p.position = pro_indus
         p.work_at = wor_at 
 
-        if res == None:
-            res = p.resume
-        else:
+        if res:
             p.resume = res
             
         p.skills.clear()

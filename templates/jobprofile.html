@@ -13,34 +13,50 @@
 {% endfor %}
 </div> {% endcomment %}
 <div class="container my-5">
-    {% if user.is_authenticated and user.profile.is_job == True %}
-        <div style="float: right;">
-            <a href="/add_jobs"><button class="btn btn-grey">Add Jobs</button></a>
-        </div>
-    {% endif %}
-<table class="table table-striped">
-    <thead>
-        <tr>
-          <th scope="col">S No.</th>
-          <th scope="col">Company</th>
-          <th scope="col">Job Title</th>
-          <th scope="col">View</th>
-          <th scope="col">Edit</th>
-          <th scope="col">Delete</th>
-        </tr>
-      </thead>
-      <tbody>
-        {% for i in jobprofile %}
-        <tr>
-          <th scope="row">{{forloop.counter}}</th>
-          <td>{{i.company}}</td>
-          <td>{{i}}</td>
-          <td><a href ="/job-details/{{i.job_slug}}" ><button class="btn btn-primary">View</button></a></td>
-          <td><a href ="/edit-job/{{i.job_id}}" ><button class="btn btn-primary">Edit</button></a></td>
-          <td><a href ="/job-details/{{i.job_slug}}" ><button class="btn btn-primary">Delete</button></a></td>
-        </tr>
-        {% endfor %}
-      </tbody>
-</table>
+      {% if user.is_authenticated and user.profile.is_job == True %}
+          <div style="float: right;">
+              <a href="/add_jobs"><button class="btn btn-grey">Add Jobs</button></a>
+          </div>
+      {% endif %}
+  <table class="table table-striped">
+      <thead>
+          <tr>
+            <th scope="col">S No.</th>
+            <th scope="col">Company</th>
+            <th scope="col">Job Title</th>
+            <th scope="col">View</th>
+            <th scope="col">Edit</th>
+            <th scope="col">Delete</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for i in jobprofile %}
+          <tr>
+            <th scope="row">{{forloop.counter}}</th>
+            <td>{{i.company}}</td>
+            <td>{{i}}</td>
+            <td><a href ="/job-details/{{i.job_slug}}" ><button class="btn btn-primary">View</button></a></td>
+            <td><a href ="/edit-job/{{i.job_id}}" ><button class="btn btn-primary">Edit</button></a></td>
+            <td><button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">Delete</button></a></td>
+            <div class="modal fade" id="exampleModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+              <div class="modal-dialog">
+                <div class="modal-content">
+                  
+                  <div class="modal-body">
+                  <center>Are You Sure ?</center>
+                  </div>
+                  <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No</button>
+                  <a href ="/delete-job/{{i.job_id}}" ><button type="button" class="btn btn-success btn-block edit" >Yes</button></a>
+                  </div>
+                  </div>
+                </div>
+              </div>
+          </tr>
+          {% endfor %}
+        </tbody>
+  </table>
+
 </div>
+
 {% endblock %}

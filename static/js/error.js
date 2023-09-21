@@ -4,7 +4,7 @@ var letter = document.getElementById("letter");
 var capital = document.getElementById("capital");
 var number = document.getElementById("number");
 var length = document.getElementById("length");
-
+var myUser = document.getElementById("username");
 // When the user clicks on the password field, show the message box
 myInput.onfocus = function() {
   document.getElementById("errormessage").style.display = "block";
@@ -14,6 +14,8 @@ myInput.onfocus = function() {
 myInput.onblur = function() {
   document.getElementById("errormessage").style.display = "none";
 }
+
+
 
 // When the user starts to type something inside the password field
 myInput.onkeyup = function() {
@@ -54,5 +56,15 @@ myInput.onkeyup = function() {
   } else {
     length.classList.remove("valid");
     length.classList.add("invalid");
+  }
+  const result = myInput.value.includes(myUser.value)
+  
+  if(result === true){
+    duplicate.classList.remove("valid");
+    duplicate.classList.add("invalid");
+  }
+  else{
+    duplicate.classList.add("valid");
+    duplicate.classList.remove("invalid");
   }
 }

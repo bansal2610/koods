@@ -4,26 +4,68 @@ from django.contrib.auth.models import User
 from uploads.models import Profile
 from jobs.models import Job
 from courses.models import Courses
+from tinymce.widgets import TinyMCE
 
-class ADDJOB(forms.ModelForm):
+# class ADDJOB(forms.ModelForm):
+#     class Meta:
+#         model = Job
+#         fields = ['category','job_title','job_type','exp_required','skills_req','job_des','min_salary','max_salary','location','company','company_desc','url','job_image','is_published','is_closed']
+#         widgets = {'content':TinyMCE(attrs={'cols':80, 'rows':30})}
+
+#     def __init__(self, *args, **kwargs):
+#         user = kwargs.pop('user', None)
+#         super(ADDJOB, self).__init__(*args, **kwargs)
+#         self.fields['skills_req'].widget.attrs = {'class':'js-select2','required':'required'}
+        
+#         if user:
+#             self.user = user 
+
+class ADDJOB_DESC(forms.ModelForm):
     class Meta:
         model = Job
-        fields = ['category','job_title','job_type','exp_required','skills_req','job_des','salary','min_salary','max_salary','location','company','company_desc','url','job_image','is_published','is_closed']
+        fields = ['job_des', 'company_desc']
+        widgets = {'content':TinyMCE(attrs={'cols':80, 'rows':30})}
+
+
     def __init__(self, *args, **kwargs):
         user = kwargs.pop('user', None)
-        super(ADDJOB, self).__init__(*args, **kwargs)
-        self.fields['skills_req'].widget.attrs = {'class':'js-select2'}
+        super(ADDJOB_DESC, self).__init__(*args, **kwargs)
+        # self.fields['skills_req'].widget.attrs = {'class':'js-select2','required':'required'}
+        self.fields['job_des'].label = "Job Description"
+        self.fields['company_desc'].label = "Course Description"
+        
         if user:
             self.user = user 
+        
+    
+    
     
 class EDITJOB(forms.ModelForm):
     class Meta:
         model = Job
-        fields = ['category','job_title','job_type','exp_required','skills_req','job_des','salary','min_salary','max_salary','location','company','company_desc','url','job_image','is_published','is_closed']
+        fields = ['category','job_title','job_type','exp_required','skills_req','job_des','min_salary','max_salary','location','company','company_desc','url','job_image','is_published','is_closed']
     def __init__(self, *args, **kwargs):
         user = kwargs.pop('user', None)
         super(EDITJOB, self).__init__(*args, **kwargs)
         self.fields['skills_req'].widget.attrs = {'class':'js-select2'}
+        if user:
+            self.user = user 
+
+
+
+class EDIT_DESC(forms.ModelForm):
+    class Meta:
+        model = Job
+        fields = ['job_des', 'company_desc']
+        widgets = {'content':TinyMCE(attrs={'cols':80, 'rows':30})}
+
+
+    def __init__(self, *args, **kwargs):
+        user = kwargs.pop('user', None)
+        super(EDIT_DESC, self).__init__(*args, **kwargs)
+        self.fields['job_des'].label = "Job Description"
+        self.fields['company_desc'].label = "Course Description"
+        
         if user:
             self.user = user 
 

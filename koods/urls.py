@@ -42,7 +42,8 @@ urlpatterns = [
     path('update-profile/<str:id>/', views.update_profile),
     path('jobprofile/',views.Jobprofile),
     path('error-404/',views.Error),
-    path('test/',views.Test,name="test")
+    path('test/',views.Test,name="test"),
+    path('delete-job/<int:id>/',views.delete_job,name="delete")
     # path('work_p/', views.work_position, name="work_prosition"),
     # path("data/",views.insert_skill),
 

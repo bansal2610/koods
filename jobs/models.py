@@ -26,7 +26,6 @@ class Job(models.Model):
     exp_required = models.CharField(max_length=100)
     skills_req =  models.ManyToManyField(skil)
     job_des = HTMLField(blank=True, null=True)
-    salary = models.CharField(max_length=20)
     min_salary = models.DecimalField(
         max_digits=10,
         decimal_places=2,
