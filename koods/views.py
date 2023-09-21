@@ -383,9 +383,6 @@ def ProfileUpdateView(request):
         res = request.FILES.get("resume", None)
         skill = request.POST.getlist("skills")
         pro_indus = Industry.objects.get(id = posi)
-        p.position = pro_indus
-        p.work_at = wor_at 
-
         if res:
             p.resume = res
             
@@ -415,6 +412,8 @@ def ProfileUpdateView(request):
                     messages.error(request,"User Not Found")
         
         p.resume_data = combined_text
+        p.position = pro_indus
+        p.work_at = wor_at 
 
         p.save()
         print(wor_at,posi,res,skill,"====================")
