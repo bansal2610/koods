@@ -36,14 +36,17 @@ urlpatterns = [
     path('add_jobs/',views.Add_jobs,name="addjob"),
     path('edit-job/<id>',views.editjob,name="editjob"),
     path('add_course/',views.Add_course,name="addcourse"),
+    path('edit-course/<id>',views.editcourse,name="editcourse"),
     path('forget/',views.password_reset_request,name="forget"),
     path('change_password/',views.change_pass,name="change_pass"),
     path('verify-otp/',views.verify_otp,name="verify_otp"),
     path('update-profile/<str:id>/', views.update_profile),
     path('jobprofile/',views.Jobprofile),
+    path('courseprofile/',views.Courseprofile),
     path('error-404/',views.Error),
     path('test/',views.Test,name="test"),
-    path('delete-job/<int:id>/',views.delete_job,name="delete")
+    path('delete-job/<int:id>/',views.delete_job),
+    path('delete-course/<int:id>/',views.delete_course),
     # path('work_p/', views.work_position, name="work_prosition"),
     # path("data/",views.insert_skill),
 

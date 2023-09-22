@@ -3,7 +3,7 @@ from django.shortcuts import get_object_or_404, redirect, render
 from django.contrib.auth import authenticate,login,logout
 from courses.models import Courses
 from jobs.models import Category, Job
-from koods.forms import ADDCOURSE, EDIT_DESC, EDITJOB, CreateUserForm
+from koods.forms import ADDCOURSE_DESC, EDIT_DESC, EDITJOB, CreateUserForm
 # from koods.forms import ProfileForm, UserForm
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import TemplateView
@@ -46,7 +46,7 @@ def Jobprofile(request):
         return redirect("/")
     usr = request.user
     jobprofile = Job.objects.filter(user=usr)
-    print(jobprofile,"===========jobdata")
+    # print(jobprofile,"===========jobdata")
     data={
         'title':'Learnkoods',
         'jobprofile':jobprofile
@@ -125,7 +125,7 @@ def Add_jobs(request):
 
             print(jb,"+++++++++++jb")
             # print(usr,job_title,company,job_type,category,exp_required,skills_req,job_des,min_salary,max_salary,location,company_desc,job_image,url,"+==================title company")
-            # jb.save()
+            jb.save()
             return redirect("/jobprofile/")
         else:
             formss = ADDJOB_DESC()
@@ -247,6 +247,18 @@ def delete_job(request, id):
     delt.delete()
     return redirect('/jobprofile/')
 
+def Courseprofile(request):
+    if not request.user.is_authenticated:
+        return redirect("/")
+    usr = request.user
+    courseprofile = Courses.objects.filter(user=usr)
+    print(courseprofile,"===========coursedata")
+    data={
+        'title':'Learnkoods',
+        'courseprofile':courseprofile
+    }
+    return render(request,"courseprofile.html",data)
+
 def Course(request):
     if request.user.is_authenticated:
         usr = request.user
@@ -277,21 +289,77 @@ def CourseDetails(request,slug):
     return render(request,"course-details.html",data)
 
 def Add_course(request):
-    if not request.user.profile.is_course == True:
-        return redirect("/")
-    form = ADDCOURSE()
+    if request.user.is_authenticated:
+        if not request.user.profile.is_course == True:
+            return redirect("/")
+    usr = request.user
+    formss = ADDCOURSE_DESC()
     if request.method == "POST":
-        form = ADDCOURSE(request.POST)
-        if form.is_valid():
-            form.save()
-            return redirect('/courses/')
+        formss = ADDCOURSE_DESC(request.POST)
+        if formss.is_valid():
+            course_des = formss.cleaned_data['course_des']
+            course_title = request.POST.get("course_title")
+            course_price = request.POST.get("course_price")
+            course_level = request.POST.get("course_level")
+            course_duration = request.POST.get("course_duration")
+            course_image = request.FILES.get("course_image", None)
+            co = Courses.objects.create(user=usr,course_title=course_title,course_price=course_price,course_level=course_level,course_duration=course_duration,course_des=course_des)
+            print(co,"+++++++++++co")
+            
+            if course_image:
+                co.course_image = course_image
+
+            co.save()
+            return redirect("/courseprofile/")
         else:
-            print("Form Error: ",form.errors)
+            formss = ADDCOURSE_DESC()
     data={
-        'form':form
+        'title':'Learnkoods',
+        "form":formss,
     }
     return render(request,"add_course.html",data)
 
+def editcourse(request,id):    
+    if request.user.is_authenticated:
+        if not request.user.profile.is_course == True:
+            return redirect("/")
+    usr = Courses.objects.get(course_id=id)
+    form = ADDCOURSE_DESC()
+    if request.method == "POST":
+        form = ADDCOURSE_DESC(request.POST, instance=usr)
+        if form.is_valid():
+            course_des = form.cleaned_data['course_des']
+        course_title = request.POST.get("course_title")
+        course_price = request.POST.get("course_price")
+        course_level = request.POST.get("course_level")
+        course_duration = request.POST.get("course_duration")
+        course_image = request.FILES.get("course_image", None)
+
+        if course_image :
+            usr.course_image = course_image
+
+        usr.course_title=course_title
+        usr.course_price=course_price
+        usr.course_level=course_level
+        usr.course_duration=course_duration
+        usr.course_des=course_des
+        
+        usr.save()
+        return redirect("/courseprofile/")
+    else:
+        form = ADDCOURSE_DESC(instance=usr)
+    data={
+    'title':'Learnkoods',
+    'usr':usr,
+    'form':form
+    }
+    return render(request,"edit_course.html",data)
+
+def delete_course(request, id):
+    delt = Courses.objects.get(course_id = id)
+    print(delt.course_id, " ======================Course Id")
+    delt.delete()
+    return redirect('/courseprofile/')
 
 def signUp(request):
     form = CreateUserForm()

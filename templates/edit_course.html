@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+
+<div class="container my-5">
+    <div class="row contents">
+        <div class="col-md-6">
+            <form method="POST" enctype="multipart/form-data" >
+                {% csrf_token %}
+                <div class="row">
+                    <div class="form-outline col-md-12 mb-2">
+                        <input type="text" name="course_title" id="course_title" class="form-control form-control" value="{{usr.course_title}}"/>
+                        <label class="form-label" for="course_title">Course Title</label>
+                    </div>
+
+                    <div class="form-outline col-md-12 mb-2">
+                        {{form.media}}
+                        {{form.course_des}}
+                        <label class="form-label" for="course_des">{{ form.course_des.label }}</label>
+                      </div>
+
+                    <div class="form-outline col-md-12 mb-2">
+                        <input type="number" name="course_price" id="course_price" class="form-control form-control" value="{{usr.course_price}}"/>
+                        <label class="form-label" for="course_price">Course Price</label>
+                    </div>
+
+                    <div class="form-outline col-md-12 mb-2">
+                        <select id="someSelectElement" name="course_level" class="form-select" aria-label="Default select example" required>
+                            <option value="Beginner" {% if usr.course_level == "Beginner" %} selected {% endif %}>Beginner</option>
+                            <option value="Intermediate" {% if usr.course_level == "Intermediate" %} selected {% endif %}>Intermediate</option>
+                            <option value="Advance" {% if usr.course_level == "Advance" %} selected {% endif %}>Advance</option>
+                        </select>
+                        <label class="form-label" for="position">Course Level</label>
+                    </div>
+                    <div class="form-outline col-md-12 mb-2">
+                        <input type="text" name="course_duration" id="course_duration" class="form-control form-control" value="{{usr.course_duration}}" />
+                        <label class="form-label" for="course_duration">Course Duration</label>
+                      </div>
+              
+                      <div class="form-outline col-md-12 mb-4">
+                        <input type="file" name="course_image" id="course_image"
+                            class="form-control form-control-lg" value="{{usr.course_image}}" />
+                        <label class="form-label" for="course_image">Course Image</label>
+                      </div>
+                </div>
+                <button type="submit" class="btn btn-success btn-block">Update</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+{% endblock %}

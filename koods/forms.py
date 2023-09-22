@@ -37,7 +37,21 @@ class ADDJOB_DESC(forms.ModelForm):
         if user:
             self.user = user 
         
-    
+class ADDCOURSE_DESC(forms.ModelForm):
+    class Meta:
+        model = Courses
+        fields = ['course_des']
+        widgets = {'content':TinyMCE(attrs={'cols':80, 'rows':30})}
+
+
+    def __init__(self, *args, **kwargs):
+        user = kwargs.pop('user', None)
+        super(ADDCOURSE_DESC, self).__init__(*args, **kwargs)
+        # self.fields['skills_req'].widget.attrs = {'class':'js-select2','required':'required'}
+        self.fields['course_des'].label = "Course Description"
+        
+        if user:
+            self.user = user 
     
     
 class EDITJOB(forms.ModelForm):
@@ -70,10 +84,10 @@ class EDIT_DESC(forms.ModelForm):
             self.user = user 
 
 
-class ADDCOURSE(forms.ModelForm):
-    class Meta:
-        model = Courses
-        fields = ['course_title','course_price','course_des','course_level','course_duration','course_image']
+# class ADDCOURSE(forms.ModelForm):
+#     class Meta:
+#         model = Courses
+#         fields = ['course_title','course_price','course_des','course_level','course_duration','course_image']
 
 class CreateUserForm(UserCreationForm):
 

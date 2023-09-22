@@ -100,12 +100,14 @@
                                         </div>
                                         <div class="row">
                                             <div class="form-outline col-md-12 mb-4">
-                                                <select class="js-select2 form-control form-control-lg" name="skills" multiple required>
-                                                    {% comment %} <option selected  values="{{user.profile.skills.id}}">{{user.profile.skills}}</option> {% endcomment %}
-                                            
+                                                <select class="js-select2 form-control form-control-lg" name="skills" multiple>
+                                                    {% for i in profile.skills.all %}           
+                                                    <option {% if profile.skills %} selected value="{{i.data}}" {% endif %} value="">{{i}}</option>        
+                                                    {% endfor %}                         
                                                     {% for i in skill %}
                                                     <option name="{{i.data}}" value="{{i.data}}">{{i.data}}</option>
                                                     {% endfor %}
+                                                    
                                                 </select>
                                                 <br>
                                                 <label class="form-label" for="email">Skills</label>

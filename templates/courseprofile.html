@@ -1,0 +1,37 @@
+{% extends 'base.html' %} {% block content %}
+
+<div class="container my-5">
+      {% if user.is_authenticated and user.profile.is_course == True %}
+          <div style="float: right;">
+              <a href="/add_course"><button class="btn btn-grey">Add Courses</button></a>
+          </div>
+      {% endif %}
+  <table class="table table-striped">
+      <thead>
+          <tr>
+            <th scope="col">S No.</th>
+            <th scope="col">Course Title</th>
+            <th scope="col">Price</th>
+            <th scope="col">Duration</th>
+            <th scope="col">View</th>
+            <th scope="col">Edit</th>
+            <th scope="col">Delete</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for i in courseprofile %}
+          <tr>
+            <th scope="row">{{forloop.counter}}</th>
+            <td>{{i}}</td>
+            <td>${{i.course_price}}</td>
+            <td>{{i.course_duration}}</td>
+            <td><a href ="/course-details/{{i.course_slug}}" ><button class="btn btn-primary">View</button></a></td>
+            <td><a href ="/edit-course/{{i.course_id}}" ><button class="btn btn-primary">Edit</button></a></td>
+            <td><a href ="/delete-course/{{i.course_id}}" ><button type="button" class="btn btn-primary" >Delete</button></a></td>
+          </tr>
+          {% endfor %}
+        </tbody>
+  </table>
+
+</div>
+{% endblock %} 	
